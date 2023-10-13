@@ -37,8 +37,8 @@ class TelaSabor(Tela):
     print("Descricao = ", dados_sabor["descricao"])    
 
   def selecionar_dados(self):
-    codigo = input("Digite o codigo do Sabor para selecionar: ")
-    return codigo
+    descricao = input("Digite o codigo do Sabor para selecionar: ")
+    return descricao
 
   def mostra_mensagem(self, msg):
     print(msg)
