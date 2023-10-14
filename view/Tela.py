@@ -6,7 +6,7 @@ class Tela(ABC):
     def opcoes(self):
         pass
 
-    def opcao_input(self, mensagem=" ", ints_validos=[]):
+    def opcao_input(self, mensagem=" ", ints_validos=None):
         while True:
             valor_lido = input(mensagem)
             try:

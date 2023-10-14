@@ -2,7 +2,7 @@ from model.Sabor import Sabor
 from view.TelaSabor import TelaSabor
 
 
-class ControladorSabors:
+class ControladorSabores:
     def __init__(self):
         self.__sabores = []
         self.__tela_sabor = TelaSabor()

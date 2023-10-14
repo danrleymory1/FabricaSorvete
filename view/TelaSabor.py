@@ -1,4 +1,4 @@
-from Tela import Tela
+from view.Tela import Tela
 
 
 class TelaSabor(Tela):

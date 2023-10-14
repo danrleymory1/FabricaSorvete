@@ -12,7 +12,7 @@ class ControladorSistema:
         self.__controlador_transferencias = ControladorTransferencias(self)
         self.__controlador_ingredientes = ControladorIngredientes()
         self.__controlador_sorvetes = ControladorSorvetes(self)
-        self.__controlador_sabores = ControladorSabores(self)
+        self.__controlador_sabores = ControladorSabores()
         self.__tela_sistema = TelaSistema()
 
     def inicializa_sistema(self):
@@ -46,6 +46,6 @@ class ControladorSistema:
             0: self.encerra_sistema,
         }
         while True:
-            opcao_escolhida = self.__tela_sistema.tela_opcoes()
+            opcao_escolhida = self.__tela_sistema.opcoes()
             funcao_escolhida = lista_opcoes[opcao_escolhida]
             funcao_escolhida()
