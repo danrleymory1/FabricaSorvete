@@ -5,6 +5,7 @@ class Deposito:
         self.__codigo = Deposito.auto_codigo
         Deposito.auto_codigo += 1
         self.__descricao = descricao
+        self.sorvetes = []
 
     @property
     def codigo(self):
@@ -17,3 +18,11 @@ class Deposito:
     @descricao.setter
     def descricao(self, descricao):
         self.__descricao = descricao
+
+    @property
+    def sorvetes(self):
+        return self.__sorvetes
+
+    @sorvetes.setter
+    def sorvetes(self, sorvetes):
+        self.__sorvetes = sorvetes

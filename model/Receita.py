@@ -1,6 +1,3 @@
-from Ingrediente import Ingrediente
-
-
 class Receita:
     auto_codigo = 1
 
@@ -8,7 +5,7 @@ class Receita:
         self.__codigo = Receita.auto_codigo
         Receita.auto_codigo += 1
         self.__descricao = descricao
-        # ingredientes
+        self.__ingredientes = ingredientes
 
     @property
     def codigo(self):
@@ -21,3 +18,11 @@ class Receita:
     @descricao.setter
     def descricao(self, descricao):
         self.__descricao = descricao
+
+    @property
+    def ingredientes(self):
+        return self.__ingredientes
+
+    @ingredientes.setter
+    def ingredientes(self, ingredientes):
+        self.__ingredientes = ingredientes
