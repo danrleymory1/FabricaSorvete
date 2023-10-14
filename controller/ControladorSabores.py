@@ -3,9 +3,10 @@ from view.TelaSabor import TelaSabor
 
 
 class ControladorSabores:
-    def __init__(self):
+    def __init__(self, controlador_sistema):
         self.__sabores = []
         self.__tela_sabor = TelaSabor()
+        self.__controlador_sistema = controlador_sistema
 
     def buscar_sabor(self):
         codigo = self.__tela_sabor.buscar()
@@ -44,3 +45,15 @@ class ControladorSabores:
                 self.__tela_sabor.mensagem_sucesso("Sabor alterado com sucesso")
 
         self.__tela_sabor.mensagem_erro("Sabor não encontrado")
+
+    def retornar(self):
+        self.__controlador_sistema.abre_tela()
+
+    def abre_tela(self):
+        lista_opcoes = {1: self.adicionar_sabor,
+                        2: self.buscar_sabor,
+                        3: self.alterar_sabor,
+                        4: self.remover_sabor,
+                        0: self.retornar}
+        while True:
+            lista_opcoes[self.__tela_sabor.opcoes()]()

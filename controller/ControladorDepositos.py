@@ -1,11 +1,11 @@
 from model.Deposito import Deposito
 from view.TelaDeposito import TelaDeposito
 
-
 class ControladorDepositos:
-    def __init__(self):
+    def __init__(self, controlador_sistema):
         self.__depositos = []
         self.__tela_deposito = TelaDeposito()
+        self.__controlador_sistema = controlador_sistema
 
     def buscar_deposito(self):
         codigo = self.__tela_deposito.buscar()
@@ -44,3 +44,17 @@ class ControladorDepositos:
                 self.__tela_deposito.mensagem_sucesso("Depósito alterado")
 
         self.__tela_deposito.mensagem_erro("Depósito não encontrado")
+      
+    def retornar(self):
+      self.__controlador_sistema.abre_tela()
+      
+    def abre_tela(self):
+      lista_opcoes = {1: self.adicinar_deposito,
+                      2: self.buscar_deposito,
+                      3: self.alterar_deposito,
+                      4: self.remover_deposito,
+                      0: self.retornar}
+      while True:
+        lista_opcoes[self.__tela_deposito.opcoes()]()
+
+  
