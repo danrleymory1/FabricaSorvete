@@ -5,7 +5,7 @@ from model.Receita import Receita
 class Sorvete:
     auto_codigo = 1
 
-    def __init__(self, preco: float, sabor: Sabor, receita: Receita) -> None:
+    def __init__(self, preco: float, sabor: Sabor, receita: Receita):
         self.__codigo = Sorvete.auto_codigo
         Sabor.auto_codigo += 1
         self.__preco = preco

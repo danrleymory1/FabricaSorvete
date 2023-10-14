@@ -1,27 +1,24 @@
-from model.Ingrediente import Ingrediente
+from view.Tela import Tela
 
 
-class TelaIngrediente:
+class TelaIngrediente(Tela):
     def __init__(self):
         pass
 
-    def buscar_ingrediente(self):
+    def opcoes(self):
+        return "ok"
+
+    def buscar(self):
         return 0
 
-    def ingrediente_info(self, ingrediente):
+    def info(self, objeto):
         return "ok"
 
-    def novo_ingrediente(self):
+    def adicionar(self):
         return "ok"
 
-    def remover_ingrediente(self):
+    def remover(self):
         return "ok"
 
-    def alterar_ingrediente(self):
+    def alterar(self):
         return (0, "ok")
-
-    def mensagem_sucesso(self, mensagem: str):
-        pass
-
-    def mensagem_erro(self, mensagem: str):
-        pass

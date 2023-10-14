@@ -8,16 +8,16 @@ class ControladorIngredientes:
         self.__tela_ingrediente = TelaIngrediente()
 
     def buscar_ingrediente(self):
-        codigo = self.__tela_ingrediente.buscar_ingrediente()
+        codigo = self.__tela_ingrediente.buscar()
 
         for ing in self.__ingredientes:
             if ing.codigo == codigo:
-                self.__tela_ingrediente.ingrediente_info(ing)
+                self.__tela_ingrediente.info(ing)
 
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
     def adicionar_ingrediente(self):
-        nome = self.__tela_ingrediente.novo_ingrediente()
+        nome = self.__tela_ingrediente.adicionar()
 
         novo_ingrediente = Ingrediente(nome)
 
@@ -26,7 +26,7 @@ class ControladorIngredientes:
         self.__tela_ingrediente.mensagem_sucesso("Ingrediente adicionado com sucesso")
 
     def remover_ingrediente(self):
-        codigo = self.__tela_ingrediente.remover_ingrediente()
+        codigo = self.__tela_ingrediente.remover()
 
         for ing in self.__ingredientes:
             if ing.codigo == codigo:
@@ -38,7 +38,7 @@ class ControladorIngredientes:
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
     def alterar_ingrediente(self):
-        (codigo, novo_nome) = self.__tela_ingrediente.alterar_ingrediente()
+        (codigo, novo_nome) = self.__tela_ingrediente.alterar()
 
         for i, ing in enumerate(self.__ingredientes):
             if ing.codigo == codigo:

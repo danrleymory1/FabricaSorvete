@@ -8,25 +8,25 @@ class ControladorDepositos:
         self.__tela_deposito = TelaDeposito()
 
     def buscar_deposito(self):
-        codigo = self.__tela_deposito.buscar_deposito()
+        codigo = self.__tela_deposito.buscar()
 
         for dep in self.__depositos:
             if dep.codigo == codigo:
-                self.__tela_deposito.deposito_info(dep)
+                self.__tela_deposito.info(dep)
 
         self.__tela_deposito.mensagem_erro("Depósito não encontrado")
 
     def adicionar_deposito(self):
-        descricao = self.__tela_deposito.novo_deposito()
+        descricao = self.__tela_deposito.adicionar()
 
         novo_deposito = Deposito(descricao)
 
         self.__depositos.append(novo_deposito)
 
-        self.__tela_deposito.mensagem_sucesso("Novo depósito inserido")
+        self.__tela_deposito.mensagem_sucesso("Novo depósito adicionado")
 
     def remover_deposito(self):
-        codigo = self.__tela_deposito.remover_deposito()
+        codigo = self.__tela_deposito.remover()
 
         for dep in self.__depositos:
             if dep.codigo == codigo:
@@ -36,7 +36,7 @@ class ControladorDepositos:
         self.__tela_deposito.mensagem_erro("Erro: Depósito não encontrado")
 
     def alterar_deposito(self):
-        (codigo, descricao) = self.__tela_deposito.alterar_deposito()
+        (codigo, descricao) = self.__tela_deposito.alterar()
 
         for i, dep in enumerate(self.__depositos):
             if dep.codigo == codigo:
