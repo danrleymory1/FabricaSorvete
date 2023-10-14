@@ -3,22 +3,44 @@ from abc import ABC, abstractmethod
 
 class Tela(ABC):
     @abstractmethod
-    def tela_opcoes(self):
+    def opcoes(self):
         pass
 
-    # Para adicionar os métodos
+    def opcao_input(self, mensagem=" ", ints_validos=[]):
+        while True:
+            valor_lido = input(mensagem)
+            try:
+                valor_int = int(valor_lido)
+                if ints_validos and valor_int not in ints_validos:
+                    raise ValueError
+                return valor_int
+            except ValueError:
+                print("Valor incorreto!")
+                if ints_validos:
+                    print("Valores válidos: ", ints_validos)
+
     @abstractmethod
-    def le_num_inteiro(self):
+    def buscar(self):
         pass
 
     @abstractmethod
-    def selecionar_dados(self):
+    def info(self, objeto):
         pass
 
     @abstractmethod
-    def mostrar_dados(self):
+    def adicionar(self):
         pass
 
     @abstractmethod
-    def adicionar_dados(self):
+    def remover(self):
         pass
+
+    @abstractmethod
+    def alterar(self):
+        pass
+
+    def mensagem_sucesso(self, mensagem):
+        print(f"SUCESSO: {mensagem}")
+
+    def mensagem_erro(self, mensagem):
+        print(f"ERRO: {mensagem}")
