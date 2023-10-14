@@ -8,12 +8,11 @@ from controller.ControladorSabores import ControladorSabores
 
 class ControladorSistema:
   def __init__(self):
-    self.__tela_sistema = TelaSistema()
-    self.__controlador_depositos = ControladorDepositos
-    self.__controlador_transferencias = ControladorTranferencias
-    self.__controlador_ingredientes = ControladorIngredientes
-    self.__controlador_sorvetes = ControladorSorvetes
-    self.__controlador_sabores = ControladorSabores
+    self.__controlador_depositos = ControladorDepositos(self)
+    self.__controlador_transferencias = ControladorTranferencias(self)
+    self.__controlador_ingredientes = ControladorIngredientes(self)
+    self.__controlador_sorvetes = ControladorSorvetes(self)
+    self.__controlador_sabores = ControladorSabores(self)
     self.__tela_sistema = TelaSistema()
 
   @property
@@ -37,11 +36,34 @@ class ControladorSistema:
     return self.__controlador_sabores
   
   def inicializa_sistema(self):
-      self.abre_tela()
+    self.abre_tela()
+
+  def cadastra_sabores(self):
+    self.__controlador_sabores.abre_tela()
+
+  def cadastra_sorvetes(self):
+    self.__controlador_sorvetes.abre_tela()
+
+  def cadastra_ingredientes(self):
+    self.__controlador_ingredientes.abre_tela()
+  
+  def cadastra_depositos(self):
+    self.__controlador_depositos.abre_tela()
+    
+  def cadastra_transferencias(self):
+    self.__controlador_transferencias.abre_tela()  
 
   def encerra_sistema(self):
     exit(0)
 
   def abre_tela(self):
-      pass
-    
+    lista_opcoes = {1: self.cadastra_sabores,
+                    2: self.cadastra_sorvetes,
+                    3: self.cadastra_ingredientes,
+                    4: self.cadastra_transferencias,
+                    5: self.cadastra_depositos,
+                    0: self.encerra_sistema}
+    while True:
+      opcao_escolhida = self.__tela_sistema.tela_opcoes()
+      funcao_escolhida = lista_opcoes[opcao_escolhida]
+      funcao_escolhida()
