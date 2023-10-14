@@ -1,3 +1,3 @@
 class ControladorIngredientes:
-  def __init__(self, controlador_sistema):
-    pass
+    def __init__(self, controlador_sistema):
+        pass
