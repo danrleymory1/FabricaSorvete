@@ -14,6 +14,7 @@ class ControladorSabores:
         for sab in self.__sabores:
             if sab.codigo == codigo:
                 self.__tela_sabor.info(sab)
+                return
 
         self.__tela_sabor.mensagem_erro("Sabor não encontrado")
 
@@ -25,6 +26,14 @@ class ControladorSabores:
         self.__sabores.append(novo_ingrediente)
 
         self.__tela_sabor.mensagem_sucesso("Sabor adicionado com sucesso")
+
+    def listar_sabores(self):
+        if not self.__sabores:
+            self.__tela_sabor.mensagem_erro("Nenhum sabor cadastrado.")
+        else:
+            self.__tela_sabor.mensagem("---------- Lista de Sabores ----------")
+            for sabor in self.__sabores:
+                self.__tela_sabor.info(sabor)
 
     def remover_sabor(self):
         codigo = self.__tela_sabor.remover()
@@ -51,9 +60,10 @@ class ControladorSabores:
 
     def abre_tela(self):
         lista_opcoes = {1: self.adicionar_sabor,
-                        2: self.buscar_sabor,
-                        3: self.alterar_sabor,
-                        4: self.remover_sabor,
+                        2: self.listar_sabores,
+                        3: self.buscar_sabor,
+                        4: self.alterar_sabor,
+                        5: self.remover_sabor,
                         0: self.retornar}
         while True:
             lista_opcoes[self.__tela_sabor.opcoes()]()

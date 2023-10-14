@@ -39,6 +39,9 @@ class Tela(ABC):
     def alterar(self):
         pass
 
+    def mensagem(self, texto):
+        print(f"{texto}")
+
     def mensagem_sucesso(self, mensagem):
         print(f"SUCESSO: {mensagem}")
 

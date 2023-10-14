@@ -10,7 +10,7 @@ class ControladorSistema:
     def __init__(self):
         self.__controlador_depositos = ControladorDepositos(self)
         self.__controlador_transferencias = ControladorTransferencias(self)
-        self.__controlador_ingredientes = ControladorIngredientes()
+        self.__controlador_ingredientes = ControladorIngredientes(self)
         self.__controlador_sorvetes = ControladorSorvetes(self)
         self.__controlador_sabores = ControladorSabores(self)
         self.__tela_sistema = TelaSistema()
