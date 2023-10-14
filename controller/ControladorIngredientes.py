@@ -3,14 +3,9 @@ from view.TelaIngrediente import TelaIngrediente
 
 
 class ControladorIngredientes:
-    def __init__(self, controlador_sistema):
-        self.__controlador_sistema = controlador_sistema
+    def __init__(self):
         self.__ingredientes = []
         self.__tela_ingrediente = TelaIngrediente()
-
-    @property
-    def controlador_sistema(self):
-        return self.__controlador_sistema
 
     def buscar_ingrediente(self):
         codigo = self.__tela_ingrediente.buscar_ingrediente()
