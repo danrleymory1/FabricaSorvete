@@ -1,4 +1,4 @@
-from Deposito import Deposito
+from model.Deposito import Deposito
 
 
 class Transferencia:

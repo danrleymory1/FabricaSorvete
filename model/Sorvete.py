@@ -1,4 +1,4 @@
-from Sabor import Sabor
+from model.Sabor import Sabor
 from model.Receita import Receita
 
 
