@@ -1,3 +1,4 @@
+from model.Deposito import Deposito
 from view.TelaDeposito import TelaDeposito
 
 
@@ -16,7 +17,9 @@ class ControladorDepositos:
         self.__tela_deposito.mensagem_erro("Depósito não encontrado")
 
     def adicionar_deposito(self):
-        novo_deposito = self.__tela_deposito.novo_deposito()
+        descricao = self.__tela_deposito.novo_deposito()
+
+        novo_deposito = Deposito(descricao)
 
         self.__depositos.append(novo_deposito)
 
@@ -33,11 +36,11 @@ class ControladorDepositos:
         self.__tela_deposito.mensagem_erro("Erro: Depósito não encontrado")
 
     def alterar_deposito(self):
-        novo_deposito = self.__tela_deposito.alterar_deposito()
+        (codigo, descricao) = self.__tela_deposito.alterar_deposito()
 
         for i, dep in enumerate(self.__depositos):
-            if dep.codigo == novo_deposito.codigo:
-                self.__depositos[i] = novo_deposito
+            if dep.codigo == codigo:
+                self.__depositos[i].descricao = descricao
                 self.__tela_deposito.mensagem_sucesso("Depósito alterado")
 
         self.__tela_deposito.mensagem_erro("Depósito não encontrado")
