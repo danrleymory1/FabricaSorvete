@@ -1,46 +1,43 @@
-from model.Deposito import Deposito
 from view.TelaDeposito import TelaDeposito
 
 
 class ControladorDepositos:
-    def __init__(self, controlador_sistema):
-        self.__controlador_sistema = controlador_sistema
+    def __init__(self):
         self.__depositos = []
         self.__tela_deposito = TelaDeposito()
 
-    @property
-    def depositos(self):
-        return self.__depositos
+    def buscar_deposito(self):
+        codigo = self.__tela_deposito.buscar_deposito()
 
-    @depositos.setter
-    def depositos(self, depositos):
-        self.__depositos = depositos
-
-    def buscar_deposito(self, codigo):
-        for dep in self.depositos:
+        for dep in self.__depositos:
             if dep.codigo == codigo:
-                return dep
+                self.__tela_deposito.deposito_info(dep)
 
-        return False
+        self.__tela_deposito.mensagem_erro("Depósito não encontrado")
 
-    # WIP
-    def adicionar_deposito(self, descricao):
-        novo_deposito = self.__tela_deposito
+    def adicionar_deposito(self):
+        novo_deposito = self.__tela_deposito.novo_deposito()
 
-        self.depositos.append(novo_deposito)
+        self.__depositos.append(novo_deposito)
 
-    def remover_deposito(self, codigo):
-        for dep in self.depositos:
+        self.__tela_deposito.mensagem_sucesso("Novo depósito inserido")
+
+    def remover_deposito(self):
+        codigo = self.__tela_deposito.remover_deposito()
+
+        for dep in self.__depositos:
             if dep.codigo == codigo:
-                self.depositos.remove(dep)
-                return True
+                self.__depositos.remove(dep)
+                self.__tela_deposito.mensagem_sucesso("Depósito removido")
 
-        return False
+        self.__tela_deposito.mensagem_erro("Erro: Depósito não encontrado")
 
-    def alterar_deposito(self, codigo, novo_deposito):
-        for i, dep in enumerate(self.depositos):
-            if dep.codigo == codigo:
-                self.depositos[i] = novo_deposito
-                return True
+    def alterar_deposito(self):
+        novo_deposito = self.__tela_deposito.alterar_deposito()
 
-        return False
+        for i, dep in enumerate(self.__depositos):
+            if dep.codigo == novo_deposito.codigo:
+                self.__depositos[i] = novo_deposito
+                self.__tela_deposito.mensagem_sucesso("Depósito alterado")
+
+        self.__tela_deposito.mensagem_erro("Depósito não encontrado")
