@@ -26,3 +26,9 @@ class TelaSabor(Tela):
     def buscar(self):
         codigo = input("Código = ")
         return codigo
+
+    def remover(self):
+        return "ok"
+
+    def alterar(self):
+        return (0, "ok")
