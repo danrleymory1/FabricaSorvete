@@ -17,15 +17,6 @@ class TelaSistema(Tela):
     def alterar(self):
         pass
 
-    def adicionar_dados(self):
-        pass
-
-    def selecionar_dados(self):
-        pass
-
-    def mostrar_dados(self):
-        pass
-
     def opcoes(self):
         print("---------- IceFac ----------")
         print("Escolha uma das opções abaixo: ")
