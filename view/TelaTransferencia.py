@@ -33,4 +33,3 @@ class TelaTransferencia(Tela):
 
     def selecionar_dados(self):
         pass
-

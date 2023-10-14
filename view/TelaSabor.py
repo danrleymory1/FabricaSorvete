@@ -31,4 +31,4 @@ class TelaSabor(Tela):
         return "ok"
 
     def alterar(self):
-        return (0, "ok")
+        return 0, "ok"

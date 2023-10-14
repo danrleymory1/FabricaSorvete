@@ -3,8 +3,9 @@ from view.TelaIngrediente import TelaIngrediente
 
 
 class ControladorIngredientes:
-    def __init__(self):
+    def __init__(self, controlador_sistema):
         self.__ingredientes = []
+        self.__controlador_sistema = controlador_sistema
         self.__tela_ingrediente = TelaIngrediente()
 
     def buscar_ingrediente(self):
@@ -48,3 +49,14 @@ class ControladorIngredientes:
                 )
 
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
+
+    def retornar(self):
+        self.__controlador_sistema.abre_tela()
+
+    def abre_tela(self):
+        lista_opcoes = {1: self.adicionar_ingrediente,
+                        2: self.buscar_ingrediente,
+                        3: self.alterar_ingrediente,
+                        4: self.remover_ingrediente,
+                        0: self.retornar
+                        }

@@ -6,7 +6,7 @@ class TelaIngrediente(Tela):
         pass
 
     def opcoes(self):
-        return "ok"
+        pass
 
     def buscar(self):
         return 0

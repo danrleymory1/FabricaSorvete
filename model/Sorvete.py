@@ -1,13 +1,10 @@
-from model.Sabor import Sabor
 from model.Receita import Receita
+from model.Sabor import Sabor
 
 
 class Sorvete:
     auto_codigo = 1
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
     def __init__(self, preco: float, sabor: Sabor, receita: Receita):
         self.__codigo = Sorvete.auto_codigo
         Sabor.auto_codigo += 1
