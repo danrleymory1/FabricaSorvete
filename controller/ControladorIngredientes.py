@@ -1,53 +1,55 @@
 from model.Ingrediente import Ingrediente
+from view.TelaIngrediente import TelaIngrediente
 
 
 class ControladorIngredientes:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__ingredientes = []
+        self.__tela_ingrediente = TelaIngrediente()
 
     @property
     def controlador_sistema(self):
         return self.__controlador_sistema
 
-    @property
-    def ingredientes(self):
-        return self.__ingredientes
+    def buscar_ingrediente(self):
+        codigo = self.__tela_ingrediente.buscar_ingrediente()
 
-    @ingredientes.setter
-    def ingredientes(self, ingredientes):
-        self.__ingredientes = ingredientes
-
-    def buscar_ingrediente(self, codigo):
-        for ing in self.ingredientes:
+        for ing in self.__ingredientes:
             if ing.codigo == codigo:
-                return ing
+                self.__tela_ingrediente.ingrediente_info(ing)
 
-        return False
+        self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
-    def adicionar_ingrediente(self, novo_ingrediente):
-        if not isinstance(novo_ingrediente, Ingrediente):
-            # TODO: exception informando que o tipo está errado
-            return
-        for ing in self.ingredientes:
-            if novo_ingrediente.codigo == ing.codigo:
-                # TODO: exception informando que o ingrediente já existe
-                return
+    def adicionar_ingrediente(self):
+        nome = self.__tela_ingrediente.novo_ingrediente()
 
-        self.ingredientes.append(novo_ingrediente)
+        novo_ingrediente = Ingrediente(nome)
 
-    def remover_ingrediente(self, codigo):
-        for ing in self.ingredientes:
+        self.__ingredientes.append(novo_ingrediente)
+
+        self.__tela_ingrediente.mensagem_sucesso("Ingrediente adicionado com sucesso")
+
+    def remover_ingrediente(self):
+        codigo = self.__tela_ingrediente.remover_ingrediente()
+
+        for ing in self.__ingredientes:
             if ing.codigo == codigo:
-                self.ingredientes.remove(ing)
-                return True
+                self.__ingredientes.remove(ing)
+                self.__tela_ingrediente.mensagem_sucesso(
+                    "Ingrediente removido com sucesso"
+                )
 
-        return False
+        self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
-    def alterar_ingrediente(self, codigo, novo_ingrediente):
-        for i, ing in enumerate(self.ingredientes):
+    def alterar_ingrediente(self):
+        (codigo, novo_nome) = self.__tela_ingrediente.alterar_ingrediente()
+
+        for i, ing in enumerate(self.__ingredientes):
             if ing.codigo == codigo:
-                self.ingredientes[i] = novo_ingrediente
-                return True
+                self.__ingredientes[i].nome = novo_nome
+                self.__tela_ingrediente.mensagem_sucesso(
+                    "Ingrediente alterado com sucesso"
+                )
 
-        return False
+        self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
