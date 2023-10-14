@@ -4,7 +4,10 @@ from model.Receita import Receita
 
 class Sorvete:
     auto_codigo = 1
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
     def __init__(self, preco: float, sabor: Sabor, receita: Receita):
         self.__codigo = Sorvete.auto_codigo
         Sabor.auto_codigo += 1
@@ -13,7 +16,6 @@ class Sorvete:
         self.__receita = receita
 
     # checar o diagrama para consultar os erros
-
     @property
     def codigo(self):
         return self.__codigo
