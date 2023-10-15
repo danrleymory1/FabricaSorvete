@@ -4,14 +4,14 @@ from view.Tela import Tela
 class TelaSabor(Tela):
     def opcoes(self):
         print("-------- Sabor ----------")
-        print("Escolha a opcao: ")
-        print("1 - Adicionar Sabor")
-        print("2 - Listar Sabor(es)")
-        print("3 - Mostrar_sabor")
-        print("4 - Alterar Sabor")
-        print("5 - Excluir Sabor")
+        print("Escolha a opção: ")
+        print("1 - Adicionar sabor")
+        print("2 - Listar sabor(es)")
+        print("3 - Mostrar sabor")
+        print("4 - Alterar sabor")
+        print("5 - Excluir sabor")
         print("0 - Retornar ao menu principal")
-        opcao = self.opcao_input("Opcao = ", [0, 1, 2, 3, 4, 5])
+        opcao = super().opcao_input("Opção = ", [0, 1, 2, 3, 4, 5])
         return opcao
 
     def adicionar(self):

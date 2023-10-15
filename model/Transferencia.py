@@ -9,6 +9,7 @@ class Transferencia:
         Transferencia.auto_codigo += 1
         self.__descricao = descricao
         self.__deposito_dest = deposito_dest
+        self.__produtos = {}
 
     @property
     def codigo(self):
@@ -29,3 +30,11 @@ class Transferencia:
     @deposito_dest.setter
     def deposito_dest(self, deposito_dest):
         self.__deposito_dest = deposito_dest
+
+    @property
+    def produtos(self):
+        return self.__produtos
+
+    @produtos.setter
+    def produtos(self, produtos):
+        self.__produtos = produtos
