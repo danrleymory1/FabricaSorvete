@@ -19,7 +19,7 @@ class TelaTransferencia(Tela):
 
         while True:
             produtos.append([self.adicionar_produto()])
-            continuar = input("Acrescentar novo produto? [S/N]")
+            continuar = input("Acrescentar novo produto? [S/N] ")
             if not continuar == "S":
                 break
 

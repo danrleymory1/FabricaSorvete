@@ -50,10 +50,12 @@ class ControladorDepositos:
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.adicionar_deposito,
-                        2: self.buscar_deposito,
-                        3: self.alterar_deposito,
-                        4: self.remover_deposito,
-                        0: self.retornar}
+        lista_opcoes = {
+            1: self.adicionar_deposito,
+            2: self.buscar_deposito,
+            3: self.alterar_deposito,
+            4: self.remover_deposito,
+            0: self.retornar,
+        }
         while True:
             lista_opcoes[self.__tela_deposito.opcoes()]()

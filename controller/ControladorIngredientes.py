@@ -54,9 +54,12 @@ class ControladorIngredientes:
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.adicionar_ingrediente,
-                        2: self.buscar_ingrediente,
-                        3: self.alterar_ingrediente,
-                        4: self.remover_ingrediente,
-                        0: self.retornar
-                        }
+        lista_opcoes = {
+            1: self.adicionar_ingrediente,
+            2: self.buscar_ingrediente,
+            3: self.alterar_ingrediente,
+            4: self.remover_ingrediente,
+            0: self.retornar,
+        }
+        while True:
+            lista_opcoes[self.__tela_ingrediente.opcoes()]()

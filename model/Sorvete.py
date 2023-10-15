@@ -5,25 +5,17 @@ from model.Sabor import Sabor
 class Sorvete:
     auto_codigo = 1
 
-    def __init__(self, preco: float, sabor: Sabor, receita: Receita):
+    def __init__(self, sabor: Sabor, receita: Receita):
         self.__codigo = Sorvete.auto_codigo
         Sabor.auto_codigo += 1
-        self.__preco = preco
+
         self.__sabor = sabor
         self.__receita = receita
+        self.__quantidade = 0
 
-    # checar o diagrama para consultar os erros
     @property
     def codigo(self):
         return self.__codigo
-
-    @property
-    def preco(self):
-        return self.__preco
-
-    @preco.setter
-    def preco(self, preco):
-        self.__preco = preco
 
     @property
     def sabor(self):
@@ -40,3 +32,11 @@ class Sorvete:
     @receita.setter
     def receita(self, receita):
         self.__receita = receita
+
+    @property
+    def quantidade(self):
+        return self.__quantidade
+
+    @quantidade.setter
+    def quantidade(self, quantidade):
+        self.__quantidade = quantidade

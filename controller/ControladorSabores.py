@@ -59,11 +59,13 @@ class ControladorSabores:
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):
-        lista_opcoes = {1: self.adicionar_sabor,
-                        2: self.listar_sabores,
-                        3: self.buscar_sabor,
-                        4: self.alterar_sabor,
-                        5: self.remover_sabor,
-                        0: self.retornar}
+        lista_opcoes = {
+            1: self.adicionar_sabor,
+            2: self.listar_sabores,
+            3: self.buscar_sabor,
+            4: self.alterar_sabor,
+            5: self.remover_sabor,
+            0: self.retornar,
+        }
         while True:
             lista_opcoes[self.__tela_sabor.opcoes()]()
