@@ -5,7 +5,7 @@ from model.Sabor import Sabor
 class Sorvete:
     auto_codigo = 1
 
-    def __init__(self, sabor: Sabor, receita: Receita):
+    def __init__(self, sabor: Sabor, receita):
         self.__codigo = Sorvete.auto_codigo
         Sabor.auto_codigo += 1
 

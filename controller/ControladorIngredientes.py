@@ -1,3 +1,5 @@
+from exceptions.IngredienteNaoEncontrado import IngredienteNaoEncontrado
+from exceptions.IngredienteDiminuirInsuficiente import IngredienteDiminuirInsuficiente
 from model.Ingrediente import Ingrediente
 from view.TelaIngrediente import TelaIngrediente
 
@@ -63,3 +65,26 @@ class ControladorIngredientes:
         }
         while True:
             lista_opcoes[self.__tela_ingrediente.opcoes()]()
+
+    def buscar_por_codigo(self, codigo):
+        for ing in self.__ingredientes:
+            if ing.codigo == codigo:
+                return ing
+        return None
+
+    def acrescentar_quantidade(self, codigo, quantidade):
+        for ing in self.__ingredientes:
+            if codigo == ing.codigo:
+                ing.quantidade = ing.quantidade + quantidade
+                return
+        raise IngredienteNaoEncontrado(codigo)
+
+    def diminuir_quantidade(self, codigo, quantidade):
+        for ing in self.__ingredientes:
+            if codigo == ing.codigo:
+                nova_quantidade = ing.quantidade - quantidade
+                if nova_quantidade < 0:
+                    raise IngredienteDiminuirInsuficiente(codigo, ing.quantidade)
+                ing.quantidade = nova_quantidade
+                return
+            raise IngredienteNaoEncontrado(codigo)

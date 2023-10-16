@@ -17,24 +17,27 @@ class TelaSorvete(Tela):
 
     def adicionar(self):
         print("---------- Novo Sorvete ----------")
-        descricao = input("Código do sabor = ")
-        ingredientes = []
+        sabor = input("Sabor = ")
+        ingredientes = {}
+        print("--- Receita ---")
+
         while True:
-            ingredientes.append([self.adicionar_ingrediente()])
+            self.adicionar_ingrediente(ingredientes)
+
             continuar = input("Acrescentar novo ingrediente? [S/N] ")
             if not continuar == "S":
                 break
-        return descricao, ingredientes
+        return sabor, ingredientes
 
-    def adicionar_ingrediente(self):
+    def adicionar_ingrediente(self, ingredientes_dict):
         codigo = input("Código do ingrediente = ")
         quantidade = input("Quantidade do ingrediente = ")
-        return codigo, quantidade
+        ingredientes_dict[codigo] = quantidade
 
     def info(self, sorvete):
         print("---------- Sorvete ----------")
         print("Codigo: ", sorvete.codigo)
-        print("Descricao: ", sorvete.nome)
+        print("Descricao: ", sorvete.sabor)
 
     def buscar(self):
         print("---------- Buscar Sorvete ----------")
@@ -49,8 +52,8 @@ class TelaSorvete(Tela):
     def alterar(self):
         print("---------- Alterar Sorvete ----------")
         codigo = input("Código do Sorvete a ser alterado: ")
-        novo_nome = input("Novo nome: ")
-        return codigo, novo_nome
+        novo_sabor = input("Novo sabor: ")
+        return codigo, novo_sabor
 
     def produzir(self):
         print("---------- Alterar Sorvete ----------")

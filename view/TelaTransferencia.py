@@ -15,26 +15,27 @@ class TelaTransferencia(Tela):
     def adicionar(self):
         print("---------- Nova Transferência  ----------")
         deposito = input("Depósito de destino = ")
-        produtos = []
+        produtos = {}
 
         while True:
-            produtos.append([self.adicionar_produto()])
+            self.adicionar_produto(produtos)
+
             continuar = input("Acrescentar novo produto? [S/N] ")
             if not continuar == "S":
                 break
 
         return deposito, produtos
 
-    def adicionar_produto(self):
-        print("---------- Transferir Produto  ----------")
-        codigo = input("Código = ")
-        quantidade = input("Quanidade = ")
-        return codigo, quantidade
+    def adicionar_produto(self, produtos_dict):
+        codigo = input("Código do produto = ")
+        quantidade = input("Quanidade do produto = ")
+        produtos_dict[codigo] = quantidade
 
     def info(self, transferencia):
         print("---------- Transferência ----------")
         print("Codigo: ", transferencia.codigo)
         print("Código depósito: ", transferencia.deposito_destiono.codigo)
+        print("Data: ", transferencia.data)
         for p in transferencia.produtos:
             print("--- Produto ---")
             print("Código: ", p.produto.codigo)

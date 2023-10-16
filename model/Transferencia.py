@@ -1,27 +1,21 @@
 from model.Deposito import Deposito
+import datetime
 
 
 class Transferencia:
     auto_codigo = 1
 
-    def __init__(self, descricao: str, deposito_dest: Deposito):
+    def __init__(self, deposito_dest: Deposito, produtos):
         self.__codigo = Transferencia.auto_codigo
         Transferencia.auto_codigo += 1
-        self.__descricao = descricao
+
         self.__deposito_dest = deposito_dest
         self.__produtos = {}
+        self.__data = datetime.datetime.now()
 
     @property
     def codigo(self):
         return self.__codigo
-
-    @property
-    def descricao(self):
-        return self.__descricao
-
-    @descricao.setter
-    def descricao(self, descricao):
-        self.__descricao = descricao
 
     @property
     def deposito_dest(self):
@@ -38,3 +32,11 @@ class Transferencia:
     @produtos.setter
     def produtos(self, produtos):
         self.__produtos = produtos
+
+    @property
+    def data(self):
+        return self.__data
+
+    @data.setter
+    def data(self, data):
+        self.__data = data
