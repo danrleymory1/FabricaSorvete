@@ -10,12 +10,18 @@ class ControladorIngredientes:
         self.__controlador_sistema = controlador_sistema
         self.__tela_ingrediente = TelaIngrediente()
 
+    @property
+    def ingredientes(self):
+        return self.__ingredientes
+
     def buscar_ingrediente(self):
         codigo = self.__tela_ingrediente.buscar()
 
+        print(codigo)
         for ing in self.__ingredientes:
             if ing.codigo == codigo:
                 self.__tela_ingrediente.info(ing)
+                return
 
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
@@ -37,6 +43,7 @@ class ControladorIngredientes:
                 self.__tela_ingrediente.mensagem_sucesso(
                     "Ingrediente removido com sucesso"
                 )
+                return
 
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
@@ -49,6 +56,7 @@ class ControladorIngredientes:
                 self.__tela_ingrediente.mensagem_sucesso(
                     "Ingrediente alterado com sucesso"
                 )
+                return
 
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
@@ -58,9 +66,11 @@ class ControladorIngredientes:
     def abre_tela(self):
         lista_opcoes = {
             1: self.adicionar_ingrediente,
-            2: self.buscar_ingrediente,
-            3: self.alterar_ingrediente,
-            4: self.remover_ingrediente,
+            2: self.listar_ingredientes,
+            3: self.buscar_ingrediente,
+            4: self.alterar_ingrediente,
+            5: self.alterar_quantidade,
+            6: self.remover_ingrediente,
             0: self.retornar,
         }
         while True:
@@ -87,4 +97,25 @@ class ControladorIngredientes:
                     raise IngredienteDiminuirInsuficiente(codigo, ing.quantidade)
                 ing.quantidade = nova_quantidade
                 return
+        raise IngredienteNaoEncontrado(codigo)
+
+    def listar_ingredientes(self):
+        self.__tela_ingrediente.mensagem("--- Ingredientes ---")
+        for ing in self.__ingredientes:
+            self.__tela_ingrediente.info(ing)
+
+    def alterar_quantidade(self):
+        (codigo, quantidade) = self.__tela_ingrediente.alterar_quantidade()
+
+        try:
+            for ing in self.__ingredientes:
+                if ing.codigo == codigo:
+                    ing.quantidade = quantidade
+                    self.__tela_ingrediente.mensagem_sucesso(
+                        "Quantidade alterada com sucesso"
+                    )
+                    return
             raise IngredienteNaoEncontrado(codigo)
+
+        except Exception as e:
+            self.__tela_ingrediente.mensagem_erro(e)

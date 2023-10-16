@@ -62,7 +62,7 @@ class TelaSorvete(Tela):
         return codigo, novo_sabor
 
     def produzir(self):
-        print("---------- Produzir Sorvete ----------")
+        print("---------- Alterar Sorvete ----------")
         codigo = self.input_int("Código do Sorvete a ser produzido: ")
         quantidade = self.input_int("Quantidade de sorvete a ser produzida: ")
         return codigo, quantidade
