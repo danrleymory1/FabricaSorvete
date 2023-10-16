@@ -1,14 +1,12 @@
 from model.Receita import Receita
-from model.Sabor import Sabor
 
 
 class Sorvete:
     auto_codigo = 1
 
-    def __init__(self, sabor: Sabor, receita):
+    def __init__(self, sabor, receita):
         self.__codigo = Sorvete.auto_codigo
-        Sabor.auto_codigo += 1
-
+        Sorvete.auto_codigo += 1
         self.__sabor = sabor
         self.__receita = receita
         self.__quantidade = 0

@@ -19,6 +19,15 @@ class Tela(ABC):
                 if ints_validos:
                     print("Valores válidos: ", ints_validos)
 
+    def input_int(self, mensagem=""):
+        while True:
+            valor_lido = input(mensagem)
+            try:
+                valor_int = int(valor_lido)
+                return valor_int
+            except ValueError:
+                print("Valor inválido!")
+
     @abstractmethod
     def buscar(self):
         pass

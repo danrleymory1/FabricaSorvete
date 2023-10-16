@@ -22,20 +22,20 @@ class TelaDeposito(Tela):
     def info(self, deposito):
         print("---------- Depósito ----------")
         print("Codigo: ", deposito.codigo)
-        print("Descricao: ", deposito.nome)
+        print("Descricao: ", deposito.descricao)
 
     def buscar(self):
         print("---------- Buscar Depósito ----------")
-        codigo = input("Código do Depósito a ser encontrado: ")
+        codigo = self.input_int("Código do Depósito a ser encontrado: ")
         return codigo
 
     def remover(self):
         print("---------- Remover Depósito ----------")
-        codigo = input("Código do Depósito a ser removido: ")
+        codigo = self.input_int("Código do Depósito a ser removido: ")
         return codigo
 
     def alterar(self):
         print("---------- Alterar Depósito ----------")
-        codigo = input("Código do Depósito a ser alterado: ")
+        codigo = self.input_int("Código do Depósito a ser alterado: ")
         nova_descricao = input("Nova descrição: ")
         return codigo, nova_descricao

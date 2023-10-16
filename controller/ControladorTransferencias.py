@@ -12,16 +12,17 @@ class ControladorTransferencias:
         self.__tela_transferencia = TelaTransferencia()
 
     def retornar(self):
-        self.__controlador_sistema.abrir_tela()
+        self.__controlador_sistema.abre_tela()
 
     def nova_transferencia(self):
         (codigo, produtos) = self.__tela_transferencia.adicionar()
 
-        deposito = None
         try:
-            for dep in self.__controlador_sistema.controlador_depositos.depositos:
-                if dep.codigo == codigo:
-                    deposito = dep
+            deposito = (
+                self.__controlador_sistema.controlador_depositos.buscar_por_codigo(
+                    codigo
+                )
+            )
 
             if deposito == None:
                 raise DepositoNaoEncontrado(codigo)
@@ -35,7 +36,9 @@ class ControladorTransferencias:
                 if sorvete == None:
                     raise SorveteNaoEncontrado(cod)
 
-                self.__controlador_sistema.diminuir_quantidade(cod, qtd)
+                self.__controlador_sistema.controlador_sorvetes.diminuir_quantidade(
+                    cod, qtd
+                )
 
             transferencia = Transferencia(deposito, produtos)
 
@@ -64,10 +67,10 @@ class ControladorTransferencias:
 
     def abre_tela(self):
         lista_opcoes = {
-            1: self.nova_transferencia(),
-            2: self.listar_transferencias(),
-            3: self.buscar_transferenia(),
-            0: self.retornar(),
+            1: self.nova_transferencia,
+            2: self.listar_transferencias,
+            3: self.buscar_transferenia,
+            0: self.retornar,
         }
         while True:
             lista_opcoes[self.__tela_transferencia.opcoes()]()

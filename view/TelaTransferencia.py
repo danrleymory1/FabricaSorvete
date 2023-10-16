@@ -9,12 +9,12 @@ class TelaTransferencia(Tela):
         print("2 - Listar Transferências")
         print("3 - Mostrar Transferência")
         print("0 - Retornar ao menu principal")
-        opcao = super().opcao_input("Opção = ", [0, 1, 2])
+        opcao = super().opcao_input("Opção = ", [0, 1, 2, 3])
         return opcao
 
     def adicionar(self):
         print("---------- Nova Transferência  ----------")
-        deposito = input("Depósito de destino = ")
+        deposito = self.input_int("Depósito de destino = ")
         produtos = {}
 
         while True:
@@ -27,29 +27,28 @@ class TelaTransferencia(Tela):
         return deposito, produtos
 
     def adicionar_produto(self, produtos_dict):
-        codigo = input("Código do produto = ")
-        quantidade = input("Quanidade do produto = ")
+        codigo = self.input_int("Código do produto = ")
+        quantidade = self.input_int("Quantidade do produto = ")
         produtos_dict[codigo] = quantidade
 
     def info(self, transferencia):
         print("---------- Transferência ----------")
         print("Codigo: ", transferencia.codigo)
-        print("Código depósito: ", transferencia.deposito_destiono.codigo)
+        print("Código depósito: ", transferencia.deposito_dest.codigo)
         print("Data: ", transferencia.data)
-        for p in transferencia.produtos:
+        for cod, qtd in transferencia.produtos.items():
             print("--- Produto ---")
-            print("Código: ", p.produto.codigo)
-            print("Nome: ", p.produto.nome)
-            print("Quantidade: ", p.quantidade)
+            print("Código: ", cod)
+            print("Quantidade: ", qtd)
 
     def buscar(self):
         print("---------- Buscar Transferência ----------")
-        codigo = input("Código da Transferência a ser encontrada: ")
+        codigo = self.input_int("Código da Transferência a ser encontrada: ")
         return codigo
 
     def remover(self):
         print("---------- Remover Transferência ----------")
-        codigo = input("Código da Transferência a ser removida: ")
+        codigo = self.input_int("Código da Transferência a ser removida: ")
         return codigo
 
     def alterar(self):

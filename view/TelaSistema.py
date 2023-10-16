@@ -3,28 +3,27 @@ from view.Tela import Tela
 
 class TelaSistema(Tela):
     def buscar(self):
-        pass
+        return
 
     def info(self, objeto):
-        pass
+        return
 
     def adicionar(self):
-        pass
+        return
 
     def remover(self):
-        pass
+        return
 
     def alterar(self):
-        pass
+        return
 
     def opcoes(self):
         print("---------- IceFac ----------")
         print("Escolha uma das opções abaixo: ")
-        print("1. Sabor")
-        print("2. Sorvete")
-        print("3. Ingrediente")
-        print("4. Transferencia")
-        print("5. Deposito")
+        print("1. Sorvete")
+        print("2. Ingrediente")
+        print("3. Transferencia")
+        print("4. Deposito")
         print("0. Finalizar")
         opcao = super().opcao_input("Opção = ", [0, 1, 2, 3, 4, 5])
         return opcao

@@ -5,12 +5,12 @@ import datetime
 class Transferencia:
     auto_codigo = 1
 
-    def __init__(self, deposito_dest: Deposito, produtos):
+    def __init__(self, deposito_dest, produtos):
         self.__codigo = Transferencia.auto_codigo
         Transferencia.auto_codigo += 1
 
         self.__deposito_dest = deposito_dest
-        self.__produtos = {}
+        self.__produtos = produtos
         self.__data = datetime.datetime.now()
 
     @property
