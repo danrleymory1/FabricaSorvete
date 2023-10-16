@@ -1,4 +1,3 @@
-from exceptions.SorveteInsuficiente import SorveteInsuficiente
 from exceptions.ReceitaInvalida import ReceitaInvalida
 from exceptions.SorveteNaoEncontrado import SorveteNaoEncontrado
 from model.Sorvete import Sorvete
@@ -29,13 +28,12 @@ class ControladorSorvetes:
         for cod, qtd in receita.items():
             try:
                 self.validar_ingrediente_quantidade(cod, qtd)
-
-                self.__sorvetes.append(novo_sorvete)
-
-                self.__tela_sorvetes.mensagem_sucesso("Sabor adicionado com sucesso")
-
             except Exception as e:
                 self.__tela_sorvetes.mensagem_erro(e)
+
+        self.__sorvetes.append(novo_sorvete)
+
+        self.__tela_sorvetes.mensagem_sucesso("Sabor adicionado com sucesso")
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -48,7 +46,7 @@ class ControladorSorvetes:
             4: self.buscar_sorvete,
             5: self.alterar_sorvete,
             6: self.remover_sorvete,
-            0: self.retornar,
+            0: self.retornar
         }
         while True:
             lista_opcoes[self.__tela_sorvetes.opcoes()]()
@@ -65,15 +63,9 @@ class ControladorSorvetes:
         (codigo, quantidade) = self.__tela_sorvetes.produzir()
 
         try:
-            sorvete = self.buscar_por_codigo(codigo)
-
-            if sorvete == None:
-                raise SorveteNaoEncontrado(codigo)
-
-            for cod, qtd in sorvete.receita.items():
-                self.__controlador_sistema.controlador_ingredientes.diminuir_quantidade(
-                    cod, qtd * quantidade
-                )
+            self.__controlador_sistema.controlador_ingredientes.diminuir_quantidade(
+                codigo, quantidade
+            )
 
             for sorv in self.__sorvetes:
                 if sorv.codigo == codigo:
@@ -120,14 +112,3 @@ class ControladorSorvetes:
             if ing.codigo == codigo:
                 return ing
         return None
-
-    def diminuir_quantidade(self, codigo, quantidade):
-        sorvete = self.buscar_por_codigo(codigo)
-        if sorvete == None:
-            raise SorveteNaoEncontrado(codigo)
-
-        nova_quantidade = sorvete.quantidade - quantidade
-        if nova_quantidade < 0:
-            raise SorveteInsuficiente(sorvete.sabor, quantidade, sorvete.quantidade)
-
-        sorvete.quantidade = nova_quantidade
