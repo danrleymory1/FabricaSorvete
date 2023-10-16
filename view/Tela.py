@@ -1,7 +1,14 @@
 from abc import ABC, abstractmethod
+from os import name, system
 
 
 class Tela(ABC):
+    def limpar_tela(self):
+        if name == "nt":
+            system("cls")
+        else:
+            system("clear")
+
     @abstractmethod
     def opcoes(self):
         pass

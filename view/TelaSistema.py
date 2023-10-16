@@ -18,6 +18,7 @@ class TelaSistema(Tela):
         return
 
     def opcoes(self):
+        super().limpar_tela()
         print("---------- IceFac ----------")
         print("Escolha uma das opções abaixo: ")
         print("1. Sorvete")
