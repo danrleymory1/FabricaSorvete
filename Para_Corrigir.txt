@@ -1,0 +1,22 @@
+Registro: Alguns erros em execução na sala: por exemplo, 
+uma mensagem de erro mostrou o código do ingrediente ao 
+invés de mostrar o ingrediente ao tentar criar um sorvete 
+com ingrediente esgotado.
+Além disso, permitiu criar dois "creme3" durante a execução em aula.
+Relatório: muito simples, apenas com listagem das transferências. 
+Seria interessante criar algum tipo de filtro (por sabor, depósiytos, etc)
+UML: Composição entre sorvete e receita está incorreta. 
+Ela foi implementada como uma associação (e deve ser associação), 
+mas no UML está como composição. O mesmo vale com as agregações 
+entre controladores e entidades, a seta está invertida. 
+Em muitas associações, faltaram os papéis nas pontas das setas.
+MVC: Erro grave de MVC: todas as telas estão lidando com as 
+entidades, recebendo as entidades em seus métodos e acessando 
+os atributos das entidades. Note que isso faz com que as telas 
+conheçam a implementação de todas as entidades, tornando assim 
+as classes muito dependentes umas das outras. Além disso, 
+é estranho que o produto de uma transferência seja um dicionário.
+Poderia ser um objeto, assum como o depósito.
+Exceções: várias validações, mas alguns controladores estão 
+com tratamento incompleto. Por exemplo, o controlador de ingredientes
+e depósitos não tem tratamento apropriado de exceções.
