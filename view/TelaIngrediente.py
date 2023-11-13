@@ -46,7 +46,7 @@ class TelaIngrediente(Tela):
             [sg.Button("Alterar Ingrediente", key=4, font=("Bahnschrift", 12), size=(20, 1))],
             [sg.Button("Alterar quantidade", key=5, font=("Bahnschrift", 12), size=(20, 1))],
             [sg.Button("Excluir Ingrediente", key=6, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Column([[sg.Cancel("Sair", key=0)]], justification='center')]
+            [sg.Column([[sg.Button("Sair", key=0)]], justification='center')]
         ]
 
         column = sg.Column(layout, justification='center', element_justification='center',
