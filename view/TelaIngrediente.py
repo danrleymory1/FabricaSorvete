@@ -23,7 +23,7 @@ class TelaIngrediente(Tela):
             opcao = 5
         if event == 6:
             opcao = 6
-        if event == 0 or None:
+        if event == 0 or button in (None, 'Sair'):
             opcao = 0
         self.close()
         return opcao
