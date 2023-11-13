@@ -35,7 +35,7 @@ class TelaSistema(Tela):
             [sg.Button("Ingredientes",  key=2, font=("Bahnschrift", 15), size=(15, 1))],
             [sg.Button("Transferencias", key=3, font=("Bahnschrift", 15), size=(15, 1))],
             [sg.Button("Depositos", key=4, font=("Bahnschrift", 15), size=(15, 1))],
-            [sg.Column([[sg.Cancel("Sair", key=0)]], justification='center')]
+            [sg.Column([[sg.Button("Sair", key=0)]], justification='center')]
         ]
 
         column = sg.Column(layout, justification='center', element_justification='center',
