@@ -96,7 +96,7 @@ class ControladorIngredientes:
             if codigo == ing.codigo:
                 nova_quantidade = ing.quantidade - quantidade
                 if nova_quantidade < 0:
-                    raise IngredienteDiminuirInsuficiente(codigo, ing.quantidade)
+                    raise IngredienteDiminuirInsuficiente(ing.nome, ing.quantidade)
                 ing.quantidade = nova_quantidade
                 return
         raise IngredienteNaoEncontrado(codigo)

@@ -1,20 +1,18 @@
 class Receita:
-    def __init__(self, descricao, ingredientes):
-        self.__descricao = descricao
-        self.__ingredientes = ingredientes
+    def __init__(self):
+        self.__ingredientes_e_quantidades = []
 
     @property
-    def descricao(self):
-        return self.__descricao
+    def ingredientes_e_quantidades(self):
+        return self.__ingredientes_e_quantidades
 
-    @descricao.setter
-    def descricao(self, descricao):
-        self.__descricao = descricao
+    @ingredientes_e_quantidades.setter
+    def ingredientes_e_quantidades(self, ingredientes_e_quantidades):
+        self.__ingredientes_e_quantidades = ingredientes_e_quantidades
 
-    @property
-    def ingredientes(self):
-        return self.__ingredientes
+    def adicionar_ingrediente_e_quantidade(self, ingrediente, quantidade):
+        i = dict()
+        i["ingrediente"] = ingrediente
+        i["quantidade"] = quantidade
 
-    @ingredientes.setter
-    def ingredientes(self, ingredientes):
-        self.__ingredientes = ingredientes
+        self.ingredientes_e_quantidades.append(i)

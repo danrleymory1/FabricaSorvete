@@ -1,6 +1,7 @@
 from exceptions.SorveteInsuficiente import SorveteInsuficiente
 from exceptions.ReceitaInvalida import ReceitaInvalida
 from exceptions.SorveteNaoEncontrado import SorveteNaoEncontrado
+from model.Receita import Receita
 from model.Sorvete import Sorvete
 from view.TelaSorvete import TelaSorvete
 
@@ -24,18 +25,21 @@ class ControladorSorvetes:
     def adicionar_sorvete(self):
         (sabor, receita) = self.__tela_sorvetes.adicionar()
 
-        novo_sorvete = Sorvete(sabor, receita)
+        try:
+            r = Receita()
+            for cod, qtd in receita.items():
+                ingrediente = self.__controlador_sistema.controlador_ingredientes.buscar_por_codigo(
+                    cod
+                )
+                self.validar_ingrediente_quantidade(ingrediente, qtd)
+                r.adicionar_ingrediente_e_quantidade(ingrediente, qtd)
+                # colocar método na classe sorvete
 
-        for cod, qtd in receita.items():
-            try:
-                self.validar_ingrediente_quantidade(cod, qtd)
-
-                self.__sorvetes.append(novo_sorvete)
-
-                self.__tela_sorvetes.mensagem_sucesso("Sabor adicionado com sucesso")
-
-            except Exception as e:
-                self.__tela_sorvetes.mensagem_erro(e)
+            novo_sorvete = Sorvete(sabor, r)
+            self.__sorvetes.append(novo_sorvete)
+            self.__tela_sorvetes.mensagem_sucesso("Sabor adicionado com sucesso")
+        except Exception as e:
+            self.__tela_sorvetes.mensagem_erro(e)
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
@@ -53,13 +57,13 @@ class ControladorSorvetes:
         while True:
             lista_opcoes[self.__tela_sorvetes.opcoes()]()
 
-    def validar_ingrediente_quantidade(self, cod, qtd):
+    def validar_ingrediente_quantidade(self, ingrediente, qtd):
         if qtd < 1:
-            raise ReceitaInvalida(cod, qtd)
+            raise ReceitaInvalida(ingrediente, qtd)
         for ing in self.__controlador_sistema.controlador_ingredientes.ingredientes:
-            if ing.codigo == cod:
+            if ing.codigo == ingrediente.codigo and ingrediente.quantidade >= qtd:
                 return True
-        raise ReceitaInvalida(cod, qtd)
+        raise ReceitaInvalida(ingrediente, qtd)
 
     def produzir_sorvete(self):
         (codigo, quantidade) = self.__tela_sorvetes.produzir()

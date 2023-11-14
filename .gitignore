@@ -1,7 +1,7 @@
-exceptions/__pycache__
-model/__pychache__
-view/__pychache__
-controller/__pychache__
+exceptions/__pycache__/
+model/__pychache__/
+view/__pychache__/
+controller/__pychache__/
 qodana.yaml
 pyproject.toml
 replit.nix
