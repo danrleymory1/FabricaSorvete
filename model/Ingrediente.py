@@ -7,6 +7,7 @@ class Ingrediente(BaseModel):
         self.__nome = nome
         self.__quantidade = 0
 
+
     @property
     def nome(self):
         return self.__nome
