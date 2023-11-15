@@ -1,21 +1,14 @@
 from model.Deposito import Deposito
+from model.Model import BaseModel
 import datetime
 
 
 class Transferencia:
-    auto_codigo = 1
-
     def __init__(self, deposito_dest, produtos):
-        self.__codigo = Transferencia.auto_codigo
-        Transferencia.auto_codigo += 1
-
+        super().__init__()
         self.__deposito_dest = deposito_dest
         self.__produtos = produtos
         self.__data = datetime.datetime.now()
-
-    @property
-    def codigo(self):
-        return self.__codigo
 
     @property
     def deposito_dest(self):

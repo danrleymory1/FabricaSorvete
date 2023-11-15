@@ -1,19 +1,13 @@
 from model.Receita import Receita
+from model.Model import BaseModel
 
 
 class Sorvete:
-    auto_codigo = 1
-
     def __init__(self, sabor, receita):
-        self.__codigo = Sorvete.auto_codigo
-        Sorvete.auto_codigo += 1
+        super().__init__()
         self.__sabor = sabor
         self.__receita = receita
         self.__quantidade = 0
-
-    @property
-    def codigo(self):
-        return self.__codigo
 
     @property
     def sabor(self):

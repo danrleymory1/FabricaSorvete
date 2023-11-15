@@ -7,7 +7,7 @@ class IngredienteDAO(DAO):
         super().__init__('ingredientes.pkl')
 
     def add(self, ingrediente: Ingrediente):
-        if ingrediente is not None and isinstance(ingrediente, Ingrediente) and isinstance(ingrediente.codigo, int):
+        if ingrediente is not None and isinstance(ingrediente, Ingrediente) and isinstance(ingrediente.nome, str):
             super().add(ingrediente.nome, ingrediente)
 
     def update(self, ingrediente: Ingrediente):
@@ -21,4 +21,9 @@ class IngredienteDAO(DAO):
     def remove(self, key):
         if isinstance(key, int):
             return super().get(key)
+
+    def update_auto_codigo(self):
+        if self.__cache:
+            max_code = max(ingrediente.codigo for ingrediente in self.__cache.values())
+            Ingrediente.auto_codigo = max_code + 1
 

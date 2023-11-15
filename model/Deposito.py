@@ -1,15 +1,11 @@
-class Deposito:
-    auto_codigo = 1
+from model.Model import BaseModel
 
+
+class Deposito:
     def __init__(self, descricao: str):
-        self.__codigo = Deposito.auto_codigo
-        Deposito.auto_codigo += 1
+        super().__init__()
         self.__descricao = descricao
         self.__sorvetes = []
-
-    @property
-    def codigo(self):
-        return self.__codigo
 
     @property
     def descricao(self):

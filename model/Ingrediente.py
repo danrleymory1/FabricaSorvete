@@ -1,15 +1,11 @@
-class Ingrediente:
-    auto_codigo = 1
+from model.Model import BaseModel
 
+
+class Ingrediente(BaseModel):
     def __init__(self, nome: str):
-        self.__codigo = Ingrediente.auto_codigo
-        Ingrediente.auto_codigo += 1
+        super().__init__()
         self.__nome = nome
         self.__quantidade = 0
-
-    @property
-    def codigo(self):
-        return self.__codigo
 
     @property
     def nome(self):
