@@ -1,5 +1,4 @@
 from model.Receita import Receita
-from model.Model import BaseModel
 
 
 class Sorvete:

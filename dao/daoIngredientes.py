@@ -26,4 +26,3 @@ class IngredienteDAO(DAO):
         if self.__cache:
             max_code = max(ingrediente.codigo for ingrediente in self.__cache.values())
             Ingrediente.auto_codigo = max_code + 1
-

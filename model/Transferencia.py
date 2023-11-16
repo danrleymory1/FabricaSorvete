@@ -1,5 +1,4 @@
 from model.Deposito import Deposito
-from model.Model import BaseModel
 import datetime
 
 

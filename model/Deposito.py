@@ -1,6 +1,3 @@
-from model.Model import BaseModel
-
-
 class Deposito:
     def __init__(self, descricao: str):
         super().__init__()

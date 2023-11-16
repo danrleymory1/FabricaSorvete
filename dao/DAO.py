@@ -7,7 +7,7 @@ class DAO(ABC):
     def __init__(self, datasource=''):
         self.__datasource = datasource
         self.__cache = {}
-        # é aqui que vai ficar a lista que estava no controlador. Nesse exemplo estamos usando um lista
+        # é aqui que vai ficar a lista que estava no controlador. Nesse exemplo estamos usando um dicionario
         try:
             self.__load()
 
@@ -28,7 +28,7 @@ class DAO(ABC):
     # cuidado: esse update só funciona se o objeto com essa chave já existe
     def update(self, key, obj):
         try:
-            if (self.__cache[key] != None):
+            if self.__cache[key] is not None:
                 self.__cache[key] = obj  # atualiza a entrada
                 self.__dump()  # atualiza o arquivo
         except KeyError:
