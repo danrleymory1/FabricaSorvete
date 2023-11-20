@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 class DAO(ABC):
     @abstractmethod
-    def __init__(self, datasource=''):
+    def __init__(self, datasource=""):
         self.__datasource = datasource
         self.__cache = {}
         # é aqui que vai ficar a lista que estava no controlador. Nesse exemplo estamos usando um dicionario
@@ -15,10 +15,10 @@ class DAO(ABC):
             self.__dump()
 
     def __dump(self):
-        pickle.dump(self.__cache, open(self.__datasource, 'wb'))
+        pickle.dump(self.__cache, open(self.__datasource, "wb"))
 
     def __load(self):
-        self.__cache = pickle.load(open(self.__datasource, 'rb'))
+        self.__cache = pickle.load(open(self.__datasource, "rb"))
 
     # esse método precisa chamar o self.__dump()
     def add(self, key, obj):
@@ -50,7 +50,3 @@ class DAO(ABC):
 
     def get_all(self):
         return self.__cache.values()
-
-    @abstractmethod
-    def update_auto_codigo(self):
-        pass

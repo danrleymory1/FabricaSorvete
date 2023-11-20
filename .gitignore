@@ -7,3 +7,5 @@ pyproject.toml
 replit.nix
 .replit
 env
+*/__pycache__
+*.pkl

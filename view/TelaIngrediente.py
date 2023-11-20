@@ -23,7 +23,7 @@ class TelaIngrediente(Tela):
             opcao = 5
         if event == 6:
             opcao = 6
-        if event == 0 or button in (None, 'Retornar'):
+        if event == 0 or button in (None, "Retornar"):
             opcao = 0
         self.close()
         return opcao
@@ -36,26 +36,65 @@ class TelaIngrediente(Tela):
         return event, button
 
     def init_opcoes(self):
-        sg.ChangeLookAndFeel('DarkTeal')
+        sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Ingredientes", font=("Bahnschrift", 21))],
-            [sg.Text("Escolha uma das opções abaixo:", font=("Bahnschrift", 15), text_color="white")],
-            [sg.Button("Adicionar Ingrediente", key=1, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Button("Listar Ingredientes", key=2, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Button("Mostrar Ingrediente", key=3, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Button("Alterar Ingrediente", key=4, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Button("Alterar quantidade", key=5, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Button("Excluir Ingrediente", key=6, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Column([[sg.Cancel("Retornar", key=0)]], justification='center')]
+            [
+                sg.Text(
+                    "Escolha uma das opções abaixo:",
+                    font=("Bahnschrift", 15),
+                    text_color="white",
+                )
+            ],
+            [
+                sg.Button(
+                    "Adicionar Ingrediente",
+                    key=1,
+                    font=("Bahnschrift", 12),
+                    size=(20, 1),
+                )
+            ],
+            [
+                sg.Button(
+                    "Listar Ingredientes", key=2, font=("Bahnschrift", 12), size=(20, 1)
+                )
+            ],
+            [
+                sg.Button(
+                    "Mostrar Ingrediente", key=3, font=("Bahnschrift", 12), size=(20, 1)
+                )
+            ],
+            [
+                sg.Button(
+                    "Alterar Ingrediente", key=4, font=("Bahnschrift", 12), size=(20, 1)
+                )
+            ],
+            [
+                sg.Button(
+                    "Alterar quantidade", key=5, font=("Bahnschrift", 12), size=(20, 1)
+                )
+            ],
+            [
+                sg.Button(
+                    "Excluir Ingrediente", key=6, font=("Bahnschrift", 12), size=(20, 1)
+                )
+            ],
+            [sg.Column([[sg.Cancel("Retornar", key=0)]], justification="center")],
         ]
 
-        column = sg.Column(layout, justification='center', element_justification='center',
-                           vertical_alignment='center')
+        column = sg.Column(
+            layout,
+            justification="center",
+            element_justification="center",
+            vertical_alignment="center",
+        )
 
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", size=(640, 360), icon='IceFac.ico').Layout(layout)
+        self.__window = sg.Window("IceFac", size=(640, 360), icon="IceFac.ico").Layout(
+            layout
+        )
 
     def adicionar(self):
         sg.ChangeLookAndFeel('DarkTeal')
@@ -103,6 +142,7 @@ class TelaIngrediente(Tela):
         nova_quantidade = self.input_int("Nova quantidade: ")
         return codigo, nova_quantidade
 
+
 """
 class TelaIngrediente(Tela):
     def opcoes(self):
@@ -118,6 +158,7 @@ class TelaIngrediente(Tela):
         opcao = super().opcao_input("Opção = ", [0, 1, 2, 3, 4, 5, 6])
         return opcao
 """
+<<<<<<< Updated upstream
 
 """    def adicionar(self):
         print("---------- Novo Ingrediente ----------")
@@ -131,3 +172,5 @@ class TelaIngrediente(Tela):
         print("Descricao: ", ingrediente.nome)
         print("Quantidade: ", ingrediente.quantidade)
 """
+=======
+>>>>>>> Stashed changes
