@@ -23,7 +23,7 @@ class TelaIngrediente(Tela):
             opcao = 5
         if event == 6:
             opcao = 6
-        if event == 0 or button in (None, 'Sair'):
+        if event == 0 or button in (None, 'Retornar'):
             opcao = 0
         self.close()
         return opcao
@@ -32,8 +32,8 @@ class TelaIngrediente(Tela):
         self.__window.Close()
 
     def open(self):
-        event, values = self.__window.Read()
-        return event, values
+        event, button = self.__window.Read()
+        return event, button
 
     def init_opcoes(self):
         sg.ChangeLookAndFeel('DarkTeal')
@@ -46,7 +46,7 @@ class TelaIngrediente(Tela):
             [sg.Button("Alterar Ingrediente", key=4, font=("Bahnschrift", 12), size=(20, 1))],
             [sg.Button("Alterar quantidade", key=5, font=("Bahnschrift", 12), size=(20, 1))],
             [sg.Button("Excluir Ingrediente", key=6, font=("Bahnschrift", 12), size=(20, 1))],
-            [sg.Column([[sg.Cancel("Sair", key=0)]], justification='center')]
+            [sg.Column([[sg.Cancel("Retornar", key=0)]], justification='center')]
         ]
 
         column = sg.Column(layout, justification='center', element_justification='center',

@@ -57,7 +57,6 @@ class ControladorIngredientes:
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
     def retornar(self):
-        print("Retornar Controlador Ingredientes")
         self.__controlador_sistema.abre_tela()
 
     def abre_tela(self):

@@ -8,24 +8,24 @@ class TelaSistema(Tela):
         self.init_components()
     
     def opcoes(self):
-        event, button = self.__window.Read()
-        opcao = 0
-        if event == 1:
+        self.init_components()
+        values, button = self.__window.Read()
+        if values == 1:
             opcao = 1
-        if event == 2:
+        if values == 2:
             opcao = 2
-        if event == 3:
+        if values == 3:
             opcao = 3
-        if event == 4:
+        if values == 4:
             opcao = 4
-        if event == 0 or button in (None, 'Sair'):
+        if values == 0 or button in (None, 'Sair'):
             opcao = 0
         self.close()
-        print("Opções Tela Sistema")
         return opcao
 
     def close(self):
         self.__window.Close()
+
 
     def init_components(self):
         sg.ChangeLookAndFeel('DarkTeal')
@@ -36,7 +36,7 @@ class TelaSistema(Tela):
             [sg.Button("Ingredientes",  key=2, font=("Bahnschrift", 15), size=(15, 1))],
             [sg.Button("Transferencias", key=3, font=("Bahnschrift", 15), size=(15, 1))],
             [sg.Button("Depositos", key=4, font=("Bahnschrift", 15), size=(15, 1))],
-            [sg.Column([[sg.Cancel("Sair", key=0)]], justification='center')]
+            [sg.Column([[sg.Button("Sair", key=0)]], justification='center')]
         ]
 
         column = sg.Column(layout, justification='center', element_justification='center',
