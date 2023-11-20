@@ -97,28 +97,35 @@ class TelaIngrediente(Tela):
         )
 
     def adicionar(self):
-        sg.ChangeLookAndFeel('DarkTeal')
+        sg.ChangeLookAndFeel("DarkTeal")
         layout = [
-            [sg.Text('Novo Ingredidente', font=("Bahnschrift", 21))],
-            [sg.Text('Descrição:', size=(15, 1), font=("Bahnschrift", 15)), sg.InputText('', key='descricao')],
-            [sg.Button('Confirmar'), sg.Button('Retornar')]
+            [sg.Text("Novo Ingredidente", font=("Bahnschrift", 21))],
+            [
+                sg.Text("Descrição:", size=(15, 1), font=("Bahnschrift", 15)),
+                sg.InputText("", key="descricao"),
+            ],
+            [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
 
         button, values = self.open()
-        descricao = values['descricao']
-        sg.Popup('Adicionado com sucesso', text_color='white')
+        descricao = values["descricao"]
+        sg.Popup("Adicionado com sucesso", text_color="white")
         self.close()
-        return {'descricao': descricao}
+        return {"descricao": descricao}
 
     def info(self, ingredientes):
         lista_ingrediente = ""
         for ing in ingredientes:
-            lista_ingrediente = lista_ingrediente + "CÓDIGO: " + ing.codigo + '\n'
-            lista_ingrediente = lista_ingrediente + "DESCRIÇÃO: " + str(ing.descricao) + '\n'
-            lista_ingrediente = lista_ingrediente + "QUANTIDADE: " + ing.quantidade + '\n'
+            lista_ingrediente = lista_ingrediente + "CÓDIGO: " + ing.codigo + "\n"
+            lista_ingrediente = (
+                lista_ingrediente + "DESCRIÇÃO: " + str(ing.descricao) + "\n"
+            )
+            lista_ingrediente = (
+                lista_ingrediente + "QUANTIDADE: " + ing.quantidade + "\n"
+            )
 
-        sg.Popup('Ingrediente(s)', lista_ingrediente)
+        sg.Popup("Ingrediente(s)", lista_ingrediente)
 
     def buscar(self):
         print("---------- Buscar Ingrediente ----------")
@@ -141,36 +148,3 @@ class TelaIngrediente(Tela):
         codigo = self.input_int("Código do Ingrediente a ser alterado: ")
         nova_quantidade = self.input_int("Nova quantidade: ")
         return codigo, nova_quantidade
-
-
-"""
-class TelaIngrediente(Tela):
-    def opcoes(self):
-        print("-------- Ingrediente ----------")
-        print("Escolha a opção: ")
-        print("1 - Adicionar ingrediente")
-        print("2 - Listar ingrediente(s)")
-        print("3 - Mostrar ingrediente")
-        print("4 - Alterar ingrediente")
-        print("5 - Alterar quantidade de ingrediente")
-        print("6 - Excluir ingrediente")
-        print("0 - Retornar ao menu principal")
-        opcao = super().opcao_input("Opção = ", [0, 1, 2, 3, 4, 5, 6])
-        return opcao
-"""
-<<<<<<< Updated upstream
-
-"""    def adicionar(self):
-        print("---------- Novo Ingrediente ----------")
-        descricao = input("Descricao = ")
-        return descricao
-"""
-"""
-    def info(self, ingrediente):
-        print("---------- Ingrediente ----------")
-        print("Codigo: ", ingrediente.codigo)
-        print("Descricao: ", ingrediente.nome)
-        print("Quantidade: ", ingrediente.quantidade)
-"""
-=======
->>>>>>> Stashed changes
