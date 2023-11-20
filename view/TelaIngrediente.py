@@ -101,29 +101,25 @@ class TelaIngrediente(Tela):
         layout = [
             [sg.Text("Novo Ingredidente", font=("Bahnschrift", 21))],
             [
-                sg.Text("Descrição:", size=(15, 1), font=("Bahnschrift", 15)),
-                sg.InputText("", key="descricao"),
+                sg.Text("Nome:", size=(15, 1), font=("Bahnschrift", 15)),
+                sg.InputText("", key="nome"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
 
         button, values = self.open()
-        descricao = values["descricao"]
+        nome = values["nome"]
         sg.Popup("Adicionado com sucesso", text_color="white")
         self.close()
-        return {"descricao": descricao}
+        return {"nome": nome}
 
     def info(self, ingredientes):
         lista_ingrediente = ""
         for ing in ingredientes:
-            lista_ingrediente = lista_ingrediente + "CÓDIGO: " + ing.codigo + "\n"
-            lista_ingrediente = (
-                lista_ingrediente + "DESCRIÇÃO: " + str(ing.descricao) + "\n"
-            )
-            lista_ingrediente = (
-                lista_ingrediente + "QUANTIDADE: " + ing.quantidade + "\n"
-            )
+            lista_ingrediente = lista_ingrediente + f"CÓDIGO: {ing.codigo}\n"
+            lista_ingrediente = lista_ingrediente + f"NOME: {ing.nome}\n"
+            lista_ingrediente = lista_ingrediente + f"QUANTIDADE: {ing.quantidade}\n"
 
         sg.Popup("Ingrediente(s)", lista_ingrediente)
 

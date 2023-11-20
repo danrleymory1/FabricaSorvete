@@ -16,7 +16,7 @@ class ControladorIngredientes:
 
         for ing in self.__ingredientes_dao.get_all():
             if ing.codigo == codigo:
-                self.__tela_ingrediente.info(ing)
+                self.__tela_ingrediente.info(ing.__dict__)
                 return
 
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
@@ -24,7 +24,7 @@ class ControladorIngredientes:
     def adicionar_ingrediente(self):
         nome = self.__tela_ingrediente.adicionar()
 
-        novo_ingrediente = Ingrediente(nome)
+        novo_ingrediente = Ingrediente(nome["nome"])
 
         self.__ingredientes_dao.add(novo_ingrediente)
 
@@ -98,8 +98,7 @@ class ControladorIngredientes:
 
     def listar_ingredientes(self):
         self.__tela_ingrediente.mensagem("--- Ingredientes ---")
-        for ing in self.__ingredientes_dao.get_all():
-            self.__tela_ingrediente.info(ing)
+        self.__tela_ingrediente.info(self.__ingredientes_dao.get_all())
 
     def alterar_quantidade(self):
         (codigo, quantidade) = self.__tela_ingrediente.alterar_quantidade()
