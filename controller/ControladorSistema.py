@@ -49,7 +49,6 @@ class ControladorSistema:
         exit(0)
 
     def abre_tela(self):
-        print("Abrete tela Controlador Sistema")
         lista_opcoes = {
             1: self.sorvetes,
             2: self.ingredientes,
@@ -59,6 +58,5 @@ class ControladorSistema:
         }
         while True:
             opcao_escolhida = self.__tela_sistema.opcoes()
-            print(opcao_escolhida)
             funcao_escolhida = lista_opcoes[opcao_escolhida]
             funcao_escolhida()

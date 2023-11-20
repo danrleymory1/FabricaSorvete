@@ -3,15 +3,50 @@ from view.Tela import Tela
 
 
 class TelaTransferencia(Tela):
+    def __init__(self):
+        self.__window = None
+        self.init_opcoes()
+
     def opcoes(self):
-        print("---------- Transferência ---------")
-        print("Escolha a opção: ")
-        print("1 - Transferir produto")
-        print("2 - Listar Transferências")
-        print("3 - Mostrar Transferência")
-        print("0 - Retornar ao menu principal")
-        opcao = super().opcao_input("Opção = ", [0, 1, 2, 3])
+        self.init_opcoes()
+        values, button = self.__window.Read()
+        # opcao = 0
+        if values == '1':
+            opcao = 1
+        if values == '2':
+            opcao = 2
+        if values == '3':
+            opcao = 3
+        if values == '0' or button in (None, 'Retornar'):
+            opcao = 0
+        self.close()
         return opcao
+
+    def close(self):
+        self.__window.Close()
+
+    """def open(self):
+        button, values = self.__window.Read()
+        return button, values"""
+
+    def init_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal')
+        layout = [
+            [sg.Text("Transferências", font=("Bahnschrift", 21))],
+            [sg.Text("Escolha uma das opções abaixo:", font=("Bahnschrift", 15), text_color="white")],
+            [sg.Button("Transferir produto", key='1', font=("Bahnschrift", 12), size=(20, 1))],
+            [sg.Button("Listar Transferências", key='2', font=("Bahnschrift", 12), size=(20, 1))],
+            [sg.Button("Mostrar Transferência", key='3', font=("Bahnschrift", 12), size=(20, 1))],
+            [sg.Column([[sg.Button("Retornar", key='0')]], justification='center')]
+        ]
+
+        column = sg.Column(layout, justification='center', element_justification='center',
+                           vertical_alignment='center')
+
+        # Layout com a coluna centralizada
+        layout = [[column]]
+
+        self.__window = sg.Window("IceFac", size=(640, 360), icon='IceFac.ico').Layout(layout)
 
     def adicionar(self):
         print("---------- Nova Transferência  ----------")
@@ -54,3 +89,16 @@ class TelaTransferencia(Tela):
 
     def alterar(self):
         return
+
+
+"""
+    def opcoes(self):
+        print("---------- Transferência ---------")
+        print("Escolha a opção: ")
+        print("1 - Transferir produto")
+        print("2 - Listar Transferências")
+        print("3 - Mostrar Transferência")
+        print("0 - Retornar ao menu principal")
+        opcao = super().opcao_input("Opção = ", [0, 1, 2, 3])
+        return opcao
+"""
