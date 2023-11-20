@@ -58,15 +58,28 @@ class TelaIngrediente(Tela):
         self.__window = sg.Window("IceFac", size=(640, 360), icon='IceFac.ico').Layout(layout)
 
     def adicionar(self):
-        print("---------- Novo Ingrediente ----------")
-        descricao = input("Descricao = ")
-        return descricao
+        sg.ChangeLookAndFeel('DarkTeal')
+        layout = [
+            [sg.Text('Novo Ingredidente', font=("Bahnschrift", 21))],
+            [sg.Text('Descrição:', size=(15, 1), font=("Bahnschrift", 15)), sg.InputText('', key='descricao')],
+            [sg.Button('Confirmar'), sg.Button('Retornar')]
+        ]
+        self.__window = sg.Window("IceFac").Layout(layout)
 
-    def info(self, ingrediente):
-        print("---------- Ingrediente ----------")
-        print("Codigo: ", ingrediente.codigo)
-        print("Descricao: ", ingrediente.nome)
-        print("Quantidade: ", ingrediente.quantidade)
+        button, values = self.open()
+        descricao = values['descricao']
+        sg.Popup('Adicionado com sucesso', text_color='white')
+        self.close()
+        return {'descricao': descricao}
+
+    def info(self, ingredientes):
+        lista_ingrediente = ""
+        for ing in ingredientes:
+            lista_ingrediente = lista_ingrediente + "CÓDIGO: " + ing.codigo + '\n'
+            lista_ingrediente = lista_ingrediente + "DESCRIÇÃO: " + str(ing.descricao) + '\n'
+            lista_ingrediente = lista_ingrediente + "QUANTIDADE: " + ing.quantidade + '\n'
+
+        sg.Popup('Ingrediente(s)', lista_ingrediente)
 
     def buscar(self):
         print("---------- Buscar Ingrediente ----------")
@@ -104,4 +117,17 @@ class TelaIngrediente(Tela):
         print("0 - Retornar ao menu principal")
         opcao = super().opcao_input("Opção = ", [0, 1, 2, 3, 4, 5, 6])
         return opcao
+"""
+
+"""    def adicionar(self):
+        print("---------- Novo Ingrediente ----------")
+        descricao = input("Descricao = ")
+        return descricao
+"""
+"""
+    def info(self, ingrediente):
+        print("---------- Ingrediente ----------")
+        print("Codigo: ", ingrediente.codigo)
+        print("Descricao: ", ingrediente.nome)
+        print("Quantidade: ", ingrediente.quantidade)
 """
