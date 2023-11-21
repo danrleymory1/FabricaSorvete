@@ -128,24 +128,61 @@ class TelaIngrediente(Tela):
                 lista_ingrediente + f"QUANTIDADE: {ing['_Ingrediente__quantidade']}\n"
             )
 
-        sg.Popup("Ingrediente(s)", lista_ingrediente)
+        sg.Popup("Ingrediente(s)", lista_ingrediente, text_color='white', font=("Bahnschrift", 12))
 
     def buscar(self):
+        sg.ChangeLookAndFeel("DarkTeal")
+        layout = [
+            [sg.Text("Buscar Ingrediente", font=("Bahnschrift", 21))],
+            [
+                sg.Text("Nome:", size=(15, 1), font=("Bahnschrift", 15)),
+                sg.InputText("", key="nome"),
+            ],
+            [sg.Button("Confirmar"), sg.Button("Retornar")],
+        ]
+        self.__window = sg.Window("IceFac").Layout(layout)
+
+        button, values = self.open()
+        nome = values["nome"]
+        self.close()
+        return nome
+        """
         print("---------- Buscar Ingrediente ----------")
         codigo = self.input_int("Código do Ingrediente a ser encontrado: ")
         return codigo
-
+        """
+        
     def remover(self):
+        sg.ChangeLookAndFeel("DarkTeal")
+        layout = [
+            [sg.Text("Buscar Ingrediente", font=("Bahnschrift", 21))],
+            [
+                sg.Text("Nome:", size=(15, 1), font=("Bahnschrift", 15)),
+                sg.InputText("", key="nome"),
+            ],
+            [sg.Button("Confirmar"), sg.Button("Retornar")],
+        ]
+        self.__window = sg.Window("IceFac").Layout(layout)
+        sg.Popup("Removido com sucesso", text_color="white")
+        button, values = self.open()
+        nome = values["nome"]
+        self.close()
+        return nome
+    """
         print("---------- Remover Ingrediente ----------")
         codigo = self.input_int("Código do Ingrediente a ser removido: ")
         return codigo
-
+    """
+    
     def alterar(self):
+        
+        """
         print("---------- Alterar Ingrediente ----------")
         codigo = self.input_int("Código do Ingrediente a ser alterado: ")
         novo_nome = input("Novo nome: ")
         return codigo, novo_nome
-
+        """
+        
     def alterar_quantidade(self):
         print("---------- Alterar Quantidade de Ingrediente ----------")
         codigo = self.input_int("Código do Ingrediente a ser alterado: ")
