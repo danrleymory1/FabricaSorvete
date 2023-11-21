@@ -117,9 +117,16 @@ class TelaIngrediente(Tela):
     def info(self, ingredientes):
         lista_ingrediente = ""
         for ing in ingredientes:
-            lista_ingrediente = lista_ingrediente + f"CÓDIGO: {ing.codigo}\n"
-            lista_ingrediente = lista_ingrediente + f"NOME: {ing.nome}\n"
-            lista_ingrediente = lista_ingrediente + f"QUANTIDADE: {ing.quantidade}\n"
+            print(repr(ing))
+            lista_ingrediente = (
+                lista_ingrediente + f"CÓDIGO: {ing['_Ingrediente__codigo']}\n"
+            )
+            lista_ingrediente = (
+                lista_ingrediente + f"NOME: {ing['_Ingrediente__nome']}\n"
+            )
+            lista_ingrediente = (
+                lista_ingrediente + f"QUANTIDADE: {ing['_Ingrediente__quantidade']}\n"
+            )
 
         sg.Popup("Ingrediente(s)", lista_ingrediente)
 
