@@ -29,8 +29,3 @@ class IngredienteDAO(DAO):
     def remove(self, key):
         if isinstance(key, int):
             return super().get(key)
-
-    def update_auto_codigo(self):
-        if self.__cache:
-            max_code = max(ingrediente.codigo for ingrediente in self.__cache.values())
-            Ingrediente.auto_codigo = max_code + 1

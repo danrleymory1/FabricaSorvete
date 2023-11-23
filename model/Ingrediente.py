@@ -1,11 +1,11 @@
-class Ingrediente:
-    auto_codigo = 1
+import uuid
 
+
+class Ingrediente:
     def __init__(self, nome: str):
         self.__nome = nome
         self.__quantidade = 0
-        self.__codigo = self.__class__.auto_codigo
-        self.__class__.auto_codigo += 1
+        self.__codigo = uuid.uuid4()
 
     @property
     def codigo(self):
@@ -30,12 +30,3 @@ class Ingrediente:
     @quantidade.setter
     def quantidade(self, quantidade):
         self.__quantidade = quantidade
-
-    def __setstate__(self, d):
-        self.__dict__ = d
-        print(repr(d))
-
-        if self.__class__.auto_codigo == None:
-            self.__class__.auto_codigo = 1
-        elif self.__class__.auto_codigo < self.codigo:
-            self.__class__.auto_codigo = self.codigo + 1
