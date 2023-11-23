@@ -38,6 +38,9 @@ class ControladorIngredientes:
     def adicionar_ingrediente(self):
         nome = self.__tela_ingrediente.adicionar()
 
+        if nome == "":
+            return
+
         novo_ingrediente = Ingrediente(nome)
 
         self.__ingredientes_dao.add(novo_ingrediente)

@@ -109,32 +109,65 @@ class TelaIngrediente(Tela):
         self.__window = sg.Window("IceFac").Layout(layout)
 
         _, values = self.open()
-        nome = values["nome"]
+        nome = values["nome"].strip()
+
+        if nome == "":
+            tentar_novamente = self.erro_tentar_novamente("Erro: Nome inválido")
+            if tentar_novamente.lower() == "no":
+                self.close()
+                return
+            else:
+                return self.adicionar()
 
         sg.Popup("Adicionado com sucesso", text_color="white")
         self.close()
         return nome
 
     def info(self, ingredientes):
-        lista_ingrediente = ""
+        ings = []
         for ing in ingredientes:
-            print(repr(ing))
-            lista_ingrediente = (
-                lista_ingrediente + f"CÓDIGO: {ing['_Ingrediente__codigo']}\n"
+            ings.append(
+                [
+                    sg.Text("ID: ", text_color="white"),
+                    sg.InputText(
+                        ing["_Ingrediente__codigo"],
+                        use_readonly_for_disable=True,
+                        disabled=True,
+                        key=f"-id-ing--{ing['_Ingrediente__codigo']}",
+                    ),
+                ],
             )
-            lista_ingrediente = (
-                lista_ingrediente + f"NOME: {ing['_Ingrediente__nome']}\n"
+            ings.append(
+                [
+                    sg.Text(
+                        f"Nome: {ing['_Ingrediente__nome']}",
+                        text_color="white",
+                    )
+                ],
             )
-            lista_ingrediente = (
-                lista_ingrediente + f"QUANTIDADE: {ing['_Ingrediente__quantidade']}\n"
+            ings.append(
+                [
+                    sg.Text(
+                        f"Quantidade: {ing['_Ingrediente__quantidade']}",
+                        text_color="white",
+                    )
+                ],
             )
 
-        sg.Popup(
-            "Ingrediente(s)",
-            lista_ingrediente,
-            text_color="white",
-            font=("Bahnschrift", 12),
-        )
+        ings.append([sg.Button("Ok")])
+        info_w = sg.Window("Ingredientes", ings, finalize=True)
+
+        # altera estilo do elemento que contém texto na chave,
+        # para parecer elemento de texto comum
+        for el in info_w.element_list():
+            if el is not None and el.key is not None:
+                if "-id-ing--" in el.key:
+                    el.Widget.config(readonlybackground=sg.theme_background_color())
+                    el.Widget.config(borderwidth=0)
+
+        info_w.Read()
+        info_w.close()
+        return
 
     def buscar(self):
         sg.ChangeLookAndFeel("DarkTeal")
@@ -146,6 +179,7 @@ class TelaIngrediente(Tela):
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
+
         self.__window = sg.Window("IceFac").Layout(layout)
 
         _, values = self.open()
@@ -230,3 +264,8 @@ class TelaIngrediente(Tela):
         # codigo = self.input_int("Código do Ingrediente a ser alterado: ")
         # nova_quantidade = self.input_int("Nova quantidade: ")
         # return codigo, nova_quantidade
+
+    def erro_tentar_novamente(self, mensagem):
+        msg = f"{mensagem}\nDeseja tentar novamente?"
+
+        return sg.Popup(msg, button_type=1)
