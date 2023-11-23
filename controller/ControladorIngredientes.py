@@ -24,6 +24,9 @@ class ControladorIngredientes:
     def buscar_por_nome(self):
         nome = self.__tela_ingrediente.buscar()
 
+        if nome is None:
+            return
+
         res = []
 
         for ing in self.__ingredientes_dao.get_all():
@@ -36,9 +39,13 @@ class ControladorIngredientes:
             self.__tela_ingrediente.info(res)
 
     def adicionar_ingrediente(self):
-        nome = self.__tela_ingrediente.adicionar()
+        ingredientes = [
+            i.__dict__["_Ingrediente__nome"] for i in self.__ingredientes_dao.get_all()
+        ]
 
-        if nome == "":
+        nome = self.__tela_ingrediente.adicionar(ingredientes)
+
+        if nome is None:
             return
 
         novo_ingrediente = Ingrediente(str(nome))
@@ -48,11 +55,18 @@ class ControladorIngredientes:
         self.__tela_ingrediente.mensagem_sucesso("Ingrediente adicionado com sucesso")
 
     def remover_ingrediente(self):
-        codigo = self.__tela_ingrediente.remover()
+        ingredientes = [
+            i.__dict__["_Ingrediente__nome"] for i in self.__ingredientes_dao.get_all()
+        ]
+
+        nome = self.__tela_ingrediente.remover(ingredientes)
+
+        if nome is None:
+            return
 
         for ing in self.__ingredientes_dao.get_all():
-            if ing.codigo == codigo:
-                self.__ingredientes_dao.remove(ing.codigo)
+            if ing.nome == nome:
+                self.__ingredientes_dao.remove(ing)
                 self.__tela_ingrediente.mensagem_sucesso(
                     "Ingrediente removido com sucesso"
                 )
@@ -61,11 +75,22 @@ class ControladorIngredientes:
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
     def alterar_ingrediente(self):
-        (codigo, novo_nome) = self.__tela_ingrediente.alterar()
+        ingredientes = [
+            i.__dict__["_Ingrediente__nome"] for i in self.__ingredientes_dao.get_all()
+        ]
 
-        for i, ing in enumerate(self.__ingredientes_dao.get_all()):
-            if ing.codigo == codigo:
-                self.__ingredientes_dao.update(novo_nome)
+        values = self.__tela_ingrediente.alterar(ingredientes)
+
+        if values == None:
+            return
+
+        novo_nome = values["nome"]
+        ingrediente = values["ingrediente"]
+
+        for ing in self.__ingredientes_dao.get_all():
+            if ing.nome == ingrediente:
+                ing.nome = novo_nome
+                self.__ingredientes_dao.update(ing)
                 self.__tela_ingrediente.mensagem_sucesso(
                     "Ingrediente alterado com sucesso"
                 )
@@ -127,6 +152,10 @@ class ControladorIngredientes:
         ]
 
         values = self.__tela_ingrediente.alterar_quantidade(ingredientes)
+
+        if values is None:
+            return
+
         nome = values["nome"]
         quantidade = values["quantidade"]
 

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from os import name, system
+import PySimpleGUI as sg
 
 
 class Tela(ABC):
@@ -59,7 +60,7 @@ class Tela(ABC):
         print(f"{texto}")
 
     def mensagem_sucesso(self, mensagem):
-        print(f"SUCESSO: {mensagem}")
+        sg.Popup(f"SUCESSO: {mensagem}")
 
     def mensagem_erro(self, mensagem):
-        print(f"ERRO: {mensagem}")
+        sg.Popup(print(f"ERRO: {mensagem}"))

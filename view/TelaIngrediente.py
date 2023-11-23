@@ -71,7 +71,7 @@ class TelaIngrediente(Tela):
             ],
             [
                 sg.Button(
-                    "Alterar quantidade", key=5, font=("Bahnschrift", 12), size=(20, 1)
+                    "Alterar Quantidade", key=5, font=("Bahnschrift", 12), size=(20, 1)
                 )
             ],
             [
@@ -96,7 +96,7 @@ class TelaIngrediente(Tela):
             layout
         )
 
-    def adicionar(self):
+    def adicionar(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Novo Ingredidente", font=("Bahnschrift", 21))],
@@ -108,7 +108,11 @@ class TelaIngrediente(Tela):
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
 
-        _, values = self.open()
+        button, values = self.open()
+
+        if button == "Retornar":
+            self.close()
+            return
         nome = values["nome"].strip()
 
         if nome == "":
@@ -117,14 +121,27 @@ class TelaIngrediente(Tela):
                 self.close()
                 return
             else:
-                return self.adicionar()
+                self.close()
+                return self.adicionar(ingredientes)
 
-        sg.Popup("Adicionado com sucesso", text_color="white")
+        for i in ingredientes:
+            if i == nome:
+                tentar_novamente = self.erro_tentar_novamente(
+                    "Erro: Nome já cadastrado"
+                )
+                if tentar_novamente.lower() == "no":
+                    self.close()
+                    return
+                else:
+                    self.close()
+                    return self.adicionar(ingredientes)
+
         self.close()
         return nome
 
     def info(self, ingredientes):
         ings = []
+        ings.append([sg.Text("Ingredientes")])
         for ing in ingredientes:
             ings.append(
                 [
@@ -154,6 +171,9 @@ class TelaIngrediente(Tela):
                 ],
             )
 
+        if len(ingredientes) == 0:
+            ings.append([sg.Text("Não há ingredientes cadastrados")])
+
         ings.append([sg.Button("Ok")])
         info_w = sg.Window("Ingredientes", ings, finalize=True)
 
@@ -182,30 +202,47 @@ class TelaIngrediente(Tela):
 
         self.__window = sg.Window("IceFac").Layout(layout)
 
-        _, values = self.open()
-        nome = values["nome"]
-        print(nome)
+        button, values = self.open()
+
         self.close()
+
+        if button == "Retornar":
+            return
+
+        nome = values["nome"]
         return nome
 
         # print("---------- Buscar Ingrediente ----------")
         # codigo = self.input_int("Código do Ingrediente a ser encontrado: ")
         # return codigo
 
-    def remover(self):
+    def remover(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Excluir Ingrediente", font=("Bahnschrift", 21))],
             [
-                sg.Text("Nome:", size=(15, 1), font=("Bahnschrift", 12)),
-                sg.InputText("", key="nome"),
+                sg.Text(
+                    "Selecione o ingrediente:",
+                    size=(15, 1),
+                    font=("Bahnschrift", 12),
+                ),
+            ],
+            [
+                sg.Combo(
+                    ingredientes,
+                    font=("Bahnschrift", 12),
+                    key="nome",
+                )
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
-        _, values = self.open()
-        nome = values["nome"]
+        button, values = self.open()
         self.close()
+        if button == "Retornar":
+            return
+
+        nome = values["nome"]
         return nome
 
     """
@@ -214,21 +251,54 @@ class TelaIngrediente(Tela):
         return codigo
     """
 
-    def alterar(self):
+    def alterar(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Alterar Ingrediente", font=("Bahnschrift", 21))],
             [
-                sg.Text("Nome:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.Text(
+                    "Selecione o ingrediente:",
+                    size=(15, 1),
+                    font=("Bahnschrift", 12),
+                ),
+            ],
+            [
+                sg.Combo(
+                    ingredientes,
+                    font=("Bahnschrift", 12),
+                    key="ingrediente",
+                )
+            ],
+            [
+                sg.Text("Novo nome:", size=(15, 1), font=("Bahnschrift", 12)),
                 sg.InputText("", key="nome"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
-        _, values = self.open()
-        nome = values["nome"]
+        button, values = self.open()
+
+        if button == "Retornar":
+            self.close()
+            return
+
+        values["nome"] = values["nome"].strip()
+
+        if values["nome"] == "":
+            tentar_novamente = self.erro_tentar_novamente("Erro: Nome inválido")
+            if tentar_novamente.lower() == "no":
+                self.close()
+                return
+            else:
+                self.close()
+                return self.alterar(ingredientes)
+
         self.close()
-        return nome
+
+        if button == "Retornar":
+            return
+
+        return values
 
         # print("---------- Alterar Ingrediente ----------")
         # codigo = self.input_int("Código do Ingrediente a ser alterado: ")
@@ -260,9 +330,13 @@ class TelaIngrediente(Tela):
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
-        _, values = self.open()
+        button, values = self.open()
 
         self.close()
+
+        if button == "Retornar":
+            return
+
         return values
 
         # print("---------- Alterar Quantidade de Ingrediente ----------")
