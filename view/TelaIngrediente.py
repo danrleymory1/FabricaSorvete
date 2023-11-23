@@ -235,17 +235,23 @@ class TelaIngrediente(Tela):
         # novo_nome = input("Novo nome: ")
         # return codigo, novo_nome
 
-    def alterar_quantidade(self):
+    def alterar_quantidade(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Alterar Quantidade", font=("Bahnschrift", 21))],
             [
                 sg.Text(
-                    "Nome do ingrediente para alterar:",
+                    "Selecione o ingrediente:",
                     size=(15, 1),
                     font=("Bahnschrift", 12),
                 ),
-                sg.InputText("", key="nome"),
+            ],
+            [
+                sg.Combo(
+                    ingredientes,
+                    font=("Bahnschrift", 12),
+                    key="nome",
+                )
             ],
             [
                 sg.Text("Quantidade:", size=(15, 1), font=("Bahnschrift", 12)),
@@ -255,10 +261,9 @@ class TelaIngrediente(Tela):
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
         _, values = self.open()
-        nome = values["nome"]
-        nova_quantidade = values["quantidade"]
+
         self.close()
-        return nome, nova_quantidade
+        return values
 
         # print("---------- Alterar Quantidade de Ingrediente ----------")
         # codigo = self.input_int("Código do Ingrediente a ser alterado: ")

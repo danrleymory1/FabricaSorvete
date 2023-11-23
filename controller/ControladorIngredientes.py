@@ -41,7 +41,7 @@ class ControladorIngredientes:
         if nome == "":
             return
 
-        novo_ingrediente = Ingrediente(nome)
+        novo_ingrediente = Ingrediente(str(nome))
 
         self.__ingredientes_dao.add(novo_ingrediente)
 
@@ -122,18 +122,24 @@ class ControladorIngredientes:
         self.__tela_ingrediente.info(dict_list)
 
     def alterar_quantidade(self):
-        (codigo, quantidade) = self.__tela_ingrediente.alterar_quantidade()
+        ingredientes = [
+            i.__dict__["_Ingrediente__nome"] for i in self.__ingredientes_dao.get_all()
+        ]
+
+        values = self.__tela_ingrediente.alterar_quantidade(ingredientes)
+        nome = values["nome"]
+        quantidade = values["quantidade"]
 
         try:
             for ing in self.__ingredientes_dao.get_all():
-                if ing.codigo == codigo:
+                if ing.nome == nome:
                     ing.quantidade = quantidade
-                    self.__ingredientes_dao.update(ing.codigo)
+                    self.__ingredientes_dao.update(ing)
                     self.__tela_ingrediente.mensagem_sucesso(
                         "Quantidade alterada com sucesso"
                     )
                     return
-            raise IngredienteNaoEncontrado(codigo)
+            raise IngredienteNaoEncontrado(nome)
 
         except Exception as e:
             self.__tela_ingrediente.mensagem_erro(e)
