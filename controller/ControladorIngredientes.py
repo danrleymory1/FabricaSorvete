@@ -21,10 +21,24 @@ class ControladorIngredientes:
 
         self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
 
+    def buscar_por_nome(self):
+        nome = self.__tela_ingrediente.buscar()
+
+        res = []
+
+        for ing in self.__ingredientes_dao.get_all():
+            if nome.upper() in ing.nome.upper():
+                res.append(ing.__dict__)
+
+        if len(res) == 0:
+            self.__tela_ingrediente.mensagem_erro("Ingrediente não encontrado")
+        else:
+            self.__tela_ingrediente.info(res)
+
     def adicionar_ingrediente(self):
         nome = self.__tela_ingrediente.adicionar()
 
-        novo_ingrediente = Ingrediente(nome["nome"])
+        novo_ingrediente = Ingrediente(nome)
 
         self.__ingredientes_dao.add(novo_ingrediente)
 
@@ -63,7 +77,7 @@ class ControladorIngredientes:
         lista_opcoes = {
             1: self.adicionar_ingrediente,
             2: self.listar_ingredientes,
-            3: self.buscar_ingrediente,
+            3: self.buscar_por_nome,
             4: self.alterar_ingrediente,
             5: self.alterar_quantidade,
             6: self.remover_ingrediente,

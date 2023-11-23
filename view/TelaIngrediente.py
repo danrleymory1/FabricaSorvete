@@ -61,7 +61,7 @@ class TelaIngrediente(Tela):
             ],
             [
                 sg.Button(
-                    "Mostrar Ingrediente", key=3, font=("Bahnschrift", 12), size=(20, 1)
+                    "Buscar Ingrediente", key=3, font=("Bahnschrift", 12), size=(20, 1)
                 )
             ],
             [
@@ -108,11 +108,12 @@ class TelaIngrediente(Tela):
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
 
-        button, values = self.open()
+        _, values = self.open()
         nome = values["nome"]
+
         sg.Popup("Adicionado com sucesso", text_color="white")
         self.close()
-        return {"nome": nome}
+        return nome
 
     def info(self, ingredientes):
         lista_ingrediente = ""
@@ -128,7 +129,12 @@ class TelaIngrediente(Tela):
                 lista_ingrediente + f"QUANTIDADE: {ing['_Ingrediente__quantidade']}\n"
             )
 
-        sg.Popup("Ingrediente(s)", lista_ingrediente, text_color='white', font=("Bahnschrift", 12))
+        sg.Popup(
+            "Ingrediente(s)",
+            lista_ingrediente,
+            text_color="white",
+            font=("Bahnschrift", 12),
+        )
 
     def buscar(self):
         sg.ChangeLookAndFeel("DarkTeal")
@@ -142,16 +148,16 @@ class TelaIngrediente(Tela):
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
 
-        button, values = self.open()
+        _, values = self.open()
         nome = values["nome"]
+        print(nome)
         self.close()
         return nome
-        """
-        print("---------- Buscar Ingrediente ----------")
-        codigo = self.input_int("Código do Ingrediente a ser encontrado: ")
-        return codigo
-        """
-        
+
+        # print("---------- Buscar Ingrediente ----------")
+        # codigo = self.input_int("Código do Ingrediente a ser encontrado: ")
+        # return codigo
+
     def remover(self):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
@@ -163,16 +169,17 @@ class TelaIngrediente(Tela):
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
-        button, values = self.open()
+        _, values = self.open()
         nome = values["nome"]
         self.close()
         return nome
+
     """
         print("---------- Remover Ingrediente ----------")
         codigo = self.input_int("Código do Ingrediente a ser removido: ")
         return codigo
     """
-    
+
     def alterar(self):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
@@ -184,23 +191,26 @@ class TelaIngrediente(Tela):
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
-        button, values = self.open()
+        _, values = self.open()
         nome = values["nome"]
         self.close()
         return nome
-        """
-        print("---------- Alterar Ingrediente ----------")
-        codigo = self.input_int("Código do Ingrediente a ser alterado: ")
-        novo_nome = input("Novo nome: ")
-        return codigo, novo_nome
-        """
-        
+
+        # print("---------- Alterar Ingrediente ----------")
+        # codigo = self.input_int("Código do Ingrediente a ser alterado: ")
+        # novo_nome = input("Novo nome: ")
+        # return codigo, novo_nome
+
     def alterar_quantidade(self):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Alterar Quantidade", font=("Bahnschrift", 21))],
             [
-                sg.Text("Nome do ingrediente para alterar:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.Text(
+                    "Nome do ingrediente para alterar:",
+                    size=(15, 1),
+                    font=("Bahnschrift", 12),
+                ),
                 sg.InputText("", key="nome"),
             ],
             [
@@ -210,14 +220,13 @@ class TelaIngrediente(Tela):
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
-        button, values = self.open()
+        _, values = self.open()
         nome = values["nome"]
-        nova_quantidade = values['quantidade']
+        nova_quantidade = values["quantidade"]
         self.close()
         return nome, nova_quantidade
-        """
-        print("---------- Alterar Quantidade de Ingrediente ----------")
-        codigo = self.input_int("Código do Ingrediente a ser alterado: ")
-        nova_quantidade = self.input_int("Nova quantidade: ")
-        return codigo, nova_quantidade
-        """
+
+        # print("---------- Alterar Quantidade de Ingrediente ----------")
+        # codigo = self.input_int("Código do Ingrediente a ser alterado: ")
+        # nova_quantidade = self.input_int("Nova quantidade: ")
+        # return codigo, nova_quantidade
