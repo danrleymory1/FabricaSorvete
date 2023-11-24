@@ -113,6 +113,10 @@ class TelaIngrediente(Tela):
         if button == "Retornar":
             self.close()
             return
+
+        if values["nome"] is None:
+            return
+
         nome = values["nome"].strip()
 
         if nome == "":

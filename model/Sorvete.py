@@ -1,12 +1,18 @@
 from model.Receita import Receita
+import uuid
 
 
 class Sorvete:
     def __init__(self, sabor, receita):
         super().__init__()
+        self.__codigo = uuid.uuid4()
         self.__sabor = sabor
         self.__receita = receita
         self.__quantidade = 0
+
+    @property
+    def codigo(self):
+        return self.__codigo
 
     @property
     def sabor(self):

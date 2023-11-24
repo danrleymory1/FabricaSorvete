@@ -23,23 +23,25 @@ class ControladorSorvetes:
         self.__tela_sorvetes.mensagem_erro("Sabor não encontrado")
 
     def adicionar_sorvete(self):
-        (sabor, receita) = self.__tela_sorvetes.adicionar()
+        self.__tela_sorvetes.adicionar()
 
-        try:
-            r = Receita()
-            for cod, qtd in receita.items():
-                ingrediente = self.__controlador_sistema.controlador_ingredientes.buscar_por_codigo(
-                    cod
-                )
-                self.validar_ingrediente_quantidade(ingrediente, qtd)
-                r.adicionar_ingrediente_e_quantidade(ingrediente, qtd)
-                # colocar método na classe sorvete
+    # (sabor, receita) = self.__tela_sorvetes.adicionar()
 
-            novo_sorvete = Sorvete(sabor, r)
-            self.__sorvetes.append(novo_sorvete)
-            self.__tela_sorvetes.mensagem_sucesso("Sabor adicionado com sucesso")
-        except Exception as e:
-            self.__tela_sorvetes.mensagem_erro(e)
+    # try:
+    #     r = Receita()
+    #     for cod, qtd in receita.items():
+    #         ingrediente = self.__controlador_sistema.controlador_ingredientes.buscar_por_codigo(
+    #             cod
+    #         )
+    #         self.validar_ingrediente_quantidade(ingrediente, qtd)
+    #         r.adicionar_ingrediente_e_quantidade(ingrediente, qtd)
+    #         # colocar método na classe sorvete
+
+    #     novo_sorvete = Sorvete(sabor, r)
+    #     self.__sorvetes.append(novo_sorvete)
+    #     self.__tela_sorvetes.mensagem_sucesso("Sabor adicionado com sucesso")
+    # except Exception as e:
+    #     self.__tela_sorvetes.mensagem_erro(e)
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
