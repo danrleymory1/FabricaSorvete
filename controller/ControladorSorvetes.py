@@ -103,24 +103,29 @@ class ControladorSorvetes:
         raise ReceitaInvalida(ingrediente, qtd)
 
     def produzir_sorvete(self):
-        (codigo, quantidade) = self.__tela_sorvetes.produzir()
+        sorvetes = self.__sorvetes_dao.get_all()
+
+        sabores = [s.sabor for s in sorvetes]
+
+        if sorvetes == None:
+            return
+
+        val = self.__tela_sorvetes.produzir(sabores)
+        if val is None:
+            return
+
+        sabor = val["sabor"]
+        quantidade = int(val["quantidade"])
 
         try:
-            sorvete = self.buscar_por_codigo(codigo)
+            for sorv in sorvetes:
+                for ing in sorv.receita.ingredientes_e_quantidades.values():
+                    self.__controlador_sistema.controlador_ingredientes.diminuir_quantidade(
+                        ing["ingrediente"], quantidade
+                    )
 
-            if sorvete == None:
-                raise SorveteNaoEncontrado(codigo)
-
-            for cod, qtd in sorvete.receita.items():
-                self.__controlador_sistema.controlador_ingredientes.diminuir_quantidade(
-                    cod, qtd * quantidade
-                )
-
-            for sorv in self.__sorvetes:
-                if sorv.codigo == codigo:
+                if sorv.sabor == sabor:
                     sorv.quantidade += quantidade
-                    return True
-            raise SorveteNaoEncontrado(codigo)
 
         except Exception as e:
             self.__tela_sorvetes.mensagem_erro(e)
@@ -179,11 +184,13 @@ class ControladorSorvetes:
         for sorv in sorvetes:
             ingredientes = []
             for ing in sorv.receita.ingredientes_e_quantidades.values():
-                ing["ingrediente"] = ing["ingrediente"].__dict__
+                receita_item_dict = ing.copy()
+                receita_item_dict["ingrediente"] = ing["ingrediente"].__dict__
 
-                ingredientes.append(ing)
+                ingredientes.append(receita_item_dict)
 
             sorvete_dict = sorv.__dict__
+
             sorvete_dict["_Sorvete__receita"] = ingredientes
             sorvetes_receitas.append(sorvete_dict)
 

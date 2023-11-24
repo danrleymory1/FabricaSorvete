@@ -132,15 +132,14 @@ class ControladorIngredientes:
                 return
         raise IngredienteNaoEncontrado(codigo)
 
-    def diminuir_quantidade(self, codigo, quantidade):
-        for ing in self.__ingredientes_dao.get_all():
-            if codigo == ing.codigo:
-                nova_quantidade = ing.quantidade - quantidade
-                if nova_quantidade < 0:
-                    raise IngredienteDiminuirInsuficiente(ing.nome, ing.quantidade)
-                ing.quantidade = nova_quantidade
-                return
-        raise IngredienteNaoEncontrado(codigo)
+    def diminuir_quantidade(self, ingrediente, quantidade):
+        nova_quantidade = ingrediente.quantidade - quantidade
+        if nova_quantidade < 0:
+            raise IngredienteDiminuirInsuficiente(
+                ingrediente.nome, ingrediente.quantidade
+            )
+        ingrediente.quantidade = nova_quantidade
+        return
 
     def listar_ingredientes(self):
         dict_list = []
@@ -161,7 +160,7 @@ class ControladorIngredientes:
             return
 
         nome = values["nome"]
-        quantidade = values["quantidade"]
+        quantidade = int(values["quantidade"])
 
         try:
             for ing in self.__ingredientes_dao.get_all():

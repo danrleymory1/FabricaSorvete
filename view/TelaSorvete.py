@@ -306,8 +306,47 @@ class TelaSorvete(Tela):
         novo_sabor = input("Novo sabor: ")
         return codigo, novo_sabor
 
-    def produzir(self):
-        print("---------- Produzir Sorvete ----------")
-        codigo = self.input_int("Código do Sorvete a ser produzido: ")
-        quantidade = self.input_int("Quantidade de sorvete a ser produzida: ")
-        return codigo, quantidade
+    def produzir(self, sabores):
+        sg.ChangeLookAndFeel("DarkTeal")
+        layout = [
+            [sg.Text("Produzir", font=("Bahnschrift", 21))],
+            [
+                sg.Text(
+                    "Selecione o sabor:",
+                    size=(15, 1),
+                    font=("Bahnschrift", 12),
+                ),
+            ],
+            [
+                sg.Combo(
+                    sabores,
+                    font=("Bahnschrift", 12),
+                    key="sabor",
+                )
+            ],
+            [
+                sg.Text("Quantidade:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.InputText("", key="quantidade"),
+            ],
+            [sg.Button("Confirmar"), sg.Button("Retornar")],
+        ]
+        self.__window = sg.Window("IceFac").Layout(layout)
+        button, values = self.open()
+
+        self.close()
+
+        if button == "Retornar":
+            return
+
+        if button == "Confirmar" and (
+            values["quantidade"] is None
+            or values["quantidade"].strip() == ""
+            or not values["quantidade"].strip().isnumeric()
+        ):
+            res = self.erro_tentar_novamente("Quantidade inválida")
+            if res == "No":
+                return
+            else:
+                return self.produzir(sabores)
+
+        return values
