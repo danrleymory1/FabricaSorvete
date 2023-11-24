@@ -3,14 +3,17 @@ from exceptions.ReceitaInvalida import ReceitaInvalida
 from exceptions.SorveteNaoEncontrado import SorveteNaoEncontrado
 from model.Receita import Receita
 from model.Sorvete import Sorvete
+from dao.daoSorvetes import SorveteDAO
 from view.TelaSorvete import TelaSorvete
 
 
 class ControladorSorvetes:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
+        self.__controlador_sistema = controlador_sistema
         self.__tela_sorvetes = TelaSorvete()
         self.__sorvetes = []
+        self.__sorvetes_dao = SorveteDAO()
 
     def buscar_sorvete(self):
         codigo = self.__tela_sorvetes.buscar()
@@ -23,25 +26,42 @@ class ControladorSorvetes:
         self.__tela_sorvetes.mensagem_erro("Sabor não encontrado")
 
     def adicionar_sorvete(self):
-        self.__tela_sorvetes.adicionar()
+        ingredientes = (
+            self.__controlador_sistema.controlador_ingredientes.ingredientes_dao.get_all()
+        )
 
-    # (sabor, receita) = self.__tela_sorvetes.adicionar()
+        ingredientes_dict = [i.__dict__["_Ingrediente__nome"] for i in ingredientes]
 
-    # try:
-    #     r = Receita()
-    #     for cod, qtd in receita.items():
-    #         ingrediente = self.__controlador_sistema.controlador_ingredientes.buscar_por_codigo(
-    #             cod
-    #         )
-    #         self.validar_ingrediente_quantidade(ingrediente, qtd)
-    #         r.adicionar_ingrediente_e_quantidade(ingrediente, qtd)
-    #         # colocar método na classe sorvete
+        val = self.__tela_sorvetes.adicionar(ingredientes_dict)
+        if val is None:
+            print("none")
+            return
 
-    #     novo_sorvete = Sorvete(sabor, r)
-    #     self.__sorvetes.append(novo_sorvete)
-    #     self.__tela_sorvetes.mensagem_sucesso("Sabor adicionado com sucesso")
-    # except Exception as e:
-    #     self.__tela_sorvetes.mensagem_erro(e)
+        sabor, ingredientes_receita = val
+
+        ingredientes_quantidades = {}
+
+        found = False
+        for ingrediente in ingredientes:
+            for novo_ing in ingredientes_receita.keys():
+                print(ingrediente.nome + " == " + novo_ing)
+
+                if ingrediente.nome == novo_ing:
+                    d = {}
+                    d["ingrediente"] = ingrediente
+                    d["quantidade"] = ingredientes_receita[novo_ing]
+
+                    ingredientes_quantidades[ingrediente.nome] = d
+                    found = True
+                    break
+
+        if not found:
+            self.__tela_sorvetes.mensagem_erro("Erro: Ingrediente não encontrado")
+
+        novo_sorvete = Sorvete(sabor, ingredientes_quantidades)
+
+        self.__sorvetes_dao.add(novo_sorvete)
+        self.__tela_sorvetes.mensagem_sucesso("Sorvete adicionado com sucesso")
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()

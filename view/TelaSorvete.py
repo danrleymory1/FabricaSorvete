@@ -94,35 +94,46 @@ class TelaSorvete(Tela):
             layout
         )
 
-    def adicionar(self):
-        ingredientes_og = ["Banana", "Chocolate"]
+    def adicionar(self, ingredientes):
         ing_id_dict = {}
+        ing_qtd_dict = {}
 
         sg.ChangeLookAndFeel("DarkTeal")
 
         layout = [
-            [sg.Text("Nome do Sorvete: "), sg.InputText("")],
+            [sg.Text("Nome do Sorvete: "), sg.InputText("", key="nome")],
             [sg.Text("Ingredientes")],
             [sg.Text("", key="-ingredientes-")],
             [
                 sg.Text("Ingrediente: "),
-                sg.Combo(ingredientes_og, key=f"-ing-"),
+                sg.Combo(ingredientes, key=f"-ing-"),
                 sg.Text("Quantidade: "),
                 sg.InputText("", key=f"-qtd-"),
             ],
             [sg.Button("Adicionar Ingrediente")],
-            [sg.Button("Ok"), sg.Button("Finish")],
+            [sg.Button("Salvar"), sg.Button("Cancelar")],
         ]
 
         self.__window = sg.Window("Ingredientes", layout, resizable=True)
 
         while True:
-            button, _ = self.open()
-            print(button)
+            button, values = self.open()
 
             if button == "Adicionar Ingrediente":
                 novo_ing_nome = self.__window["-ing-"].get()
                 novo_ing_qtd = self.__window["-qtd-"].get()
+
+                if novo_ing_nome is None or novo_ing_nome.strip() == "":
+                    sg.Popup("Erro: Selecione um ingrediente")
+                    continue
+
+                if (
+                    novo_ing_qtd is None
+                    or novo_ing_qtd.strip() == ""
+                    or not novo_ing_qtd.isnumeric()
+                ):
+                    sg.Popup("Erro: Quantidade inválida")
+                    continue
 
                 if novo_ing_nome in ing_id_dict.keys():
                     button = sg.Popup(
@@ -141,31 +152,36 @@ class TelaSorvete(Tela):
                 )
 
                 ing_id_dict[novo_ing_nome] = novo_ing_id
+                ing_qtd_dict[novo_ing_nome] = int(novo_ing_qtd)
 
                 self.__window.extend_layout(
                     self.__window["-ingredientes-"], novo_ing_elemento
                 )
                 self.__window.refresh()
 
-            if "-remover-" in button:
+            elif "-remover-" in button:
                 target = button.replace("-remover-", "")
 
                 self.__window[target].hide_row()
 
                 ing_id_dict = {k: v for k, v in ing_id_dict.items() if v != target}
 
-        # print("---------- Novo Sorvete ----------")
-        # sabor = input("Sabor = ")
-        # ingredientes = {}
-        # print("--- Receita ---")
+            elif button == "Salvar":
+                nome = values["nome"]
 
-        # while True:
-        #     self.adicionar_ingrediente(ingredientes)
+                if nome is None or nome.strip() == "":
+                    sg.Popup("Erro: Nome do sorvete inválido\nTente novamente")
+                    continue
+                if len(ing_qtd_dict) == 0:
+                    sg.Popup(
+                        "Erro: Não há ingredientes\nAdicione ao menos um ingrediente"
+                    )
+                    continue
 
-        #     continuar = input("Acrescentar novo ingrediente? [S/N] ")
-        #     if not continuar == "S":
-        #         break
-        # return sabor, ingredientes
+                return (nome, ing_qtd_dict)
+
+            elif button == "Cancelar":
+                return None
 
     def novo_ingrediente(self, nome, qtd):
         id = str(uuid.uuid4())
@@ -179,12 +195,6 @@ class TelaSorvete(Tela):
             ],
             id,
         )
-
-        # codigo = self.input_int("Código do ingrediente = ")
-        # quantidade = self.input_int("Quantidade do ingrediente = ")
-        # ingredientes_dict[codigo] = quantidade
-        #
-        # return ingrediente
 
     def info(self, sorvete):
         print("---------- Sorvete ----------")
@@ -218,19 +228,3 @@ class TelaSorvete(Tela):
         codigo = self.input_int("Código do Sorvete a ser produzido: ")
         quantidade = self.input_int("Quantidade de sorvete a ser produzida: ")
         return codigo, quantidade
-
-
-# """
-#     def opcoes(self):
-#             print("-------- Sorvete ----------")
-#             print("Escolha a opção: ")
-#             print("1 - Produzir sorvete")
-#             print("2 - Adicionar sorvete")
-#             print("3 - Listar sorvete(s)")
-#             print("4 - Mostrar sorvete")
-#             print("5 - Alterar sorvete")
-#             print("6 - Excluir sorvete")
-#             print("0 - Retornar ao menu principal")
-#             opcao = super().opcao_input("Opção = ", [0, 1, 2, 3, 4, 5, 6])
-#             return opcao
-# """

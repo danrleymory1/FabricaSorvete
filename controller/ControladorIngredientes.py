@@ -11,6 +11,10 @@ class ControladorIngredientes:
         self.__controlador_sistema = controlador_sistema
         self.__tela_ingrediente = TelaIngrediente()
 
+    @property
+    def ingredientes_dao(self):
+        return self.__ingredientes_dao
+
     def buscar_ingrediente(self):
         codigo = self.__tela_ingrediente.buscar()
 

@@ -3,12 +3,13 @@ import uuid
 
 
 class Sorvete:
-    def __init__(self, sabor, receita):
+    def __init__(self, sabor, ingredientes_quantidades):
         super().__init__()
         self.__codigo = uuid.uuid4()
         self.__sabor = sabor
-        self.__receita = receita
         self.__quantidade = 0
+
+        self.__receita = Receita(ingredientes_quantidades)
 
     @property
     def codigo(self):
