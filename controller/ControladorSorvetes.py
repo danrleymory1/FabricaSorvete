@@ -1,7 +1,6 @@
 from exceptions.SorveteInsuficiente import SorveteInsuficiente
 from exceptions.ReceitaInvalida import ReceitaInvalida
 from exceptions.SorveteNaoEncontrado import SorveteNaoEncontrado
-from model.Receita import Receita
 from model.Sorvete import Sorvete
 from dao.daoSorvetes import SorveteDAO
 from view.TelaSorvete import TelaSorvete
@@ -111,9 +110,20 @@ class ControladorSorvetes:
             self.__tela_sorvetes.mensagem_erro(e)
 
     def listar_sorvetes(self):
-        self.__tela_sorvetes.mensagem("---- Sorvetes ----")
-        for sorv in self.__sorvetes:
-            self.__tela_sorvetes.info(sorv)
+        sorvetes_receitas = []
+
+        for sorv in self.__sorvetes_dao.get_all():
+            ingredientes = []
+            for ing in sorv.receita.ingredientes_e_quantidades.values():
+                ing["ingrediente"] = ing["ingrediente"].__dict__
+
+                ingredientes.append(ing)
+
+            sorvete_dict = sorv.__dict__
+            sorvete_dict["_Sorvete__receita"] = ingredientes
+            sorvetes_receitas.append(sorvete_dict)
+
+        self.__tela_sorvetes.info(sorvetes_receitas)
 
     def alterar_sorvete(self):
         (codigo, novo_sabor) = self.__tela_sorvetes.alterar()

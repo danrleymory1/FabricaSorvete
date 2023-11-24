@@ -178,6 +178,7 @@ class TelaSorvete(Tela):
                     )
                     continue
 
+                self.close()
                 return (nome, ing_qtd_dict)
 
             elif button == "Cancelar":
@@ -196,16 +197,67 @@ class TelaSorvete(Tela):
             id,
         )
 
-    def info(self, sorvete):
-        print("---------- Sorvete ----------")
-        print("Codigo: ", sorvete.codigo)
-        print("Descricao: ", sorvete.sabor)
-        print("Quantidade: ", sorvete.quantidade)
-        print("Receita:")
-        for cod, qtd in sorvete.receita.items():
-            print("Código: ", cod)
-            print("Quantidade: ", qtd)
-            print("--")
+    def info(self, sorvetes_receitas):
+        sorvs = []
+        sorvs.append([sg.Text("Sorvetes")])
+        for sorv in sorvetes_receitas:
+            sorvs.append(
+                [
+                    sg.Text("ID: ", text_color="white"),
+                    sg.InputText(
+                        sorv["_Sorvete__codigo"],
+                        use_readonly_for_disable=True,
+                        disabled=True,
+                        key=f"-id-sorv--{sorv['_Sorvete__codigo']}",
+                    ),
+                ],
+            )
+            sorvs.append(
+                [
+                    sg.Text(
+                        f"Sabor: {sorv['_Sorvete__sabor']}",
+                        text_color="white",
+                    )
+                ],
+            )
+            sorvs.append(
+                [
+                    sg.Text(
+                        f"Quantidade: {sorv['_Sorvete__quantidade']}",
+                        text_color="white",
+                    )
+                ],
+            )
+
+            ings = [[sg.Text("Receita: ")]]
+            for ing in sorv["_Sorvete__receita"]:
+                layout = [
+                    sg.Text(
+                        f"- {ing['quantidade']} {ing['ingrediente']['_Ingrediente__nome']}"
+                    ),
+                ]
+
+                ings.append(layout)
+
+            sorvs.append([sg.Column(ings)])
+
+        if len(sorvetes_receitas) == 0:
+            sorvs.append([sg.Text("Não há ingredientes cadastrados")])
+
+        sorvs.append([sg.Button("Ok")])
+        info_w = sg.Window("Ingredientes", sorvs, finalize=True)
+
+        # altera estilo do elemento que contém texto na chave,
+        # para parecer elemento de texto comum
+        for el in info_w.element_list():
+            if el is not None and el.key is not None:
+                if "-id-sorv--" in el.key:
+                    el.Widget.config(readonlybackground=sg.theme_background_color())
+                    el.Widget.config(borderwidth=0)
+
+        info_w.Read()
+        info_w.close()
+        return
 
     def buscar(self):
         print("---------- Buscar Sorvete ----------")
