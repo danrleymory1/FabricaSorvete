@@ -182,6 +182,7 @@ class TelaSorvete(Tela):
                 return (nome, ing_qtd_dict)
 
             elif button == "Cancelar":
+                self.close()
                 return None
 
     def novo_ingrediente(self, nome, qtd):
@@ -301,7 +302,7 @@ class TelaSorvete(Tela):
 
     def alterar(self):
         print("---------- Alterar Sorvete ----------")
-        codigo = self.input_int("Código do Sorvete a ser alterado: ")
+        codigo = self.input_int("Código do Sorvete a ser o: ")
         novo_sabor = input("Novo sabor: ")
         return codigo, novo_sabor
 
