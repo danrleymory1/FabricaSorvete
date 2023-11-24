@@ -15,14 +15,30 @@ class ControladorSorvetes:
         self.__sorvetes_dao = SorveteDAO()
 
     def buscar_sorvete(self):
-        codigo = self.__tela_sorvetes.buscar()
+        val = self.__tela_sorvetes.buscar()
+        if val is None:
+            return
 
-        for sorv in self.__sorvetes:
-            if sorv.codigo == codigo:
-                self.__tela_sorvetes.info(sorv)
-                return
+        opcao = val["opcao"]
+        info = val["info"]
 
-        self.__tela_sorvetes.mensagem_erro("Sabor não encontrado")
+        res = []
+        if opcao == "Sabor":
+            for sorv in self.__sorvetes_dao.get_all():
+                if info.upper() in sorv.sabor.upper():
+                    res.append(sorv)
+
+        elif opcao == "Ingrediente":
+            for sorv in self.__sorvetes_dao.get_all():
+                for ing in sorv.receita.ingredientes_e_quantidades.keys():
+                    if info.upper() in ing.upper():
+                        res.append(sorv)
+
+        if len(res) == 0:
+            self.__tela_sorvetes.mensagem_erro("Sorvete não encontrado")
+
+        sorvetes_para_tela = self.preparar_para_tela(res)
+        self.__tela_sorvetes.info(sorvetes_para_tela)
 
     def adicionar_sorvete(self):
         ingredientes = (
@@ -110,20 +126,9 @@ class ControladorSorvetes:
             self.__tela_sorvetes.mensagem_erro(e)
 
     def listar_sorvetes(self):
-        sorvetes_receitas = []
-
-        for sorv in self.__sorvetes_dao.get_all():
-            ingredientes = []
-            for ing in sorv.receita.ingredientes_e_quantidades.values():
-                ing["ingrediente"] = ing["ingrediente"].__dict__
-
-                ingredientes.append(ing)
-
-            sorvete_dict = sorv.__dict__
-            sorvete_dict["_Sorvete__receita"] = ingredientes
-            sorvetes_receitas.append(sorvete_dict)
-
-        self.__tela_sorvetes.info(sorvetes_receitas)
+        sorvetes = self.__sorvetes_dao.get_all()
+        sorvetes_para_tela = self.preparar_para_tela(sorvetes)
+        self.__tela_sorvetes.info(sorvetes_para_tela)
 
     def alterar_sorvete(self):
         (codigo, novo_sabor) = self.__tela_sorvetes.alterar()
@@ -167,3 +172,19 @@ class ControladorSorvetes:
             raise SorveteInsuficiente(sorvete.sabor, quantidade, sorvete.quantidade)
 
         sorvete.quantidade = nova_quantidade
+
+    def preparar_para_tela(self, sorvetes):
+        sorvetes_receitas = []
+
+        for sorv in sorvetes:
+            ingredientes = []
+            for ing in sorv.receita.ingredientes_e_quantidades.values():
+                ing["ingrediente"] = ing["ingrediente"].__dict__
+
+                ingredientes.append(ing)
+
+            sorvete_dict = sorv.__dict__
+            sorvete_dict["_Sorvete__receita"] = ingredientes
+            sorvetes_receitas.append(sorvete_dict)
+
+        return sorvetes_receitas

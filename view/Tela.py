@@ -63,4 +63,9 @@ class Tela(ABC):
         sg.Popup(f"SUCESSO: {mensagem}")
 
     def mensagem_erro(self, mensagem):
-        sg.Popup(print(f"ERRO: {mensagem}"))
+        sg.Popup(f"ERRO: {mensagem}")
+
+    def erro_tentar_novamente(self, mensagem):
+        msg = f"{mensagem}\nDeseja tentar novamente?"
+
+        return sg.Popup(msg, button_type=1)

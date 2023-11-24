@@ -64,7 +64,7 @@ class TelaSorvete(Tela):
             ],
             [
                 sg.Button(
-                    "Mostrar Sorvete", key=4, font=("Bahnschrift", 12), size=(20, 1)
+                    "Buscar Sorvete", key=4, font=("Bahnschrift", 12), size=(20, 1)
                 )
             ],
             [
@@ -260,9 +260,39 @@ class TelaSorvete(Tela):
         return
 
     def buscar(self):
-        print("---------- Buscar Sorvete ----------")
-        codigo = self.input_int("Código do Sorvete a ser encontrado: ")
-        return codigo
+        sg.ChangeLookAndFeel("DarkTeal")
+        layout = [
+            [sg.Text("Buscar Sorvete", font=("Bahnschrift", 21))],
+            [
+                sg.Text("Buscar por: "),
+                sg.Combo(["Sabor", "Ingrediente"], key="opcao"),
+                sg.InputText("", key="info"),
+            ],
+            [sg.Button("Buscar"), sg.Button("Retornar")],
+        ]
+
+        self.__window = sg.Window("IceFac").Layout(layout)
+
+        button, values = self.open()
+
+        if button == "Buscar" and (
+            (values["info"] is None or values["info"].strip() == "")
+            or (values["opcao"] is None or values["opcao"].strip() == "")
+        ):
+            res = self.erro_tentar_novamente("Pesquisa inválida.")
+            if res == "No":
+                self.close()
+                return
+            else:
+                self.close()
+                return self.buscar()
+
+        self.close()
+
+        if button == "Retornar":
+            return
+
+        return values
 
     def remover(self):
         print("---------- Remover Sorvete ----------")

@@ -342,13 +342,3 @@ class TelaIngrediente(Tela):
             return
 
         return values
-
-        # print("---------- Alterar Quantidade de Ingrediente ----------")
-        # codigo = self.input_int("Código do Ingrediente a ser alterado: ")
-        # nova_quantidade = self.input_int("Nova quantidade: ")
-        # return codigo, nova_quantidade
-
-    def erro_tentar_novamente(self, mensagem):
-        msg = f"{mensagem}\nDeseja tentar novamente?"
-
-        return sg.Popup(msg, button_type=1)

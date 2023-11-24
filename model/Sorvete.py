@@ -8,7 +8,6 @@ class Sorvete:
         self.__codigo = uuid.uuid4()
         self.__sabor = sabor
         self.__quantidade = 0
-
         self.__receita = Receita(ingredientes_quantidades)
 
     @property
