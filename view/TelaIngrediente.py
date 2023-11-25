@@ -92,9 +92,7 @@ class TelaIngrediente(Tela):
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", size=(640, 360), icon="IceFac.ico").Layout(
-            layout
-        )
+        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(layout)
 
     def adicionar(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
