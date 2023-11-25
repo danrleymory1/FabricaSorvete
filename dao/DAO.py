@@ -38,6 +38,7 @@ class DAO(ABC):
         try:
             return self.__cache[key]
         except KeyError:
+            print("error")
             pass  # implementar aqui o tratamento da exceção
 
     # esse método precisa chamar o self.__dump()

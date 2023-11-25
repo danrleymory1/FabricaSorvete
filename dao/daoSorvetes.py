@@ -1,4 +1,3 @@
-from uuid import UUID
 from dao.DAO import DAO
 from model.Sorvete import Sorvete
 
@@ -11,7 +10,7 @@ class SorveteDAO(DAO):
         if (
             sorvete is not None
             and isinstance(sorvete, Sorvete)
-            and isinstance(sorvete.codigo, UUID)
+            and isinstance(sorvete.codigo, str)
         ):
             super().add(sorvete.codigo, sorvete)
 
@@ -19,14 +18,18 @@ class SorveteDAO(DAO):
         if (
             sorvete is not None
             and isinstance(sorvete, Sorvete)
-            and isinstance(sorvete.codigo, UUID)
+            and isinstance(sorvete.codigo, str)
         ):
-            super().update(sorvete.codigo, UUID)
+            super().update(sorvete.codigo, sorvete)
 
-    def get(self, key: UUID):
-        if isinstance(key, UUID):
+    def get(self, key: str):
+        if isinstance(key, str):
             return super().get(key)
 
-    def remove(self, key: UUID):
-        if isinstance(key, UUID):
-            return super().get(key)
+    def remove(self, sorvete: Sorvete):
+        if (
+            sorvete is not None
+            and isinstance(sorvete, Sorvete)
+            and isinstance(sorvete.codigo, str)
+        ):
+            return super().remove(sorvete.codigo)

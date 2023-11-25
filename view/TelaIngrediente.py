@@ -286,6 +286,9 @@ class TelaIngrediente(Tela):
             self.close()
             return
 
+        if values["nome"] is None:
+            return
+
         values["nome"] = values["nome"].strip()
 
         if values["nome"] == "":

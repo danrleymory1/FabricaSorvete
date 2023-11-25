@@ -5,7 +5,7 @@ class Ingrediente:
     def __init__(self, nome: str):
         self.__nome = nome
         self.__quantidade = 0
-        self.__codigo = uuid.uuid4()
+        self.__codigo = str(uuid.uuid4())
 
     @property
     def codigo(self):

@@ -1,6 +1,5 @@
 from dao.DAO import DAO
 from model.Ingrediente import Ingrediente
-from uuid import UUID
 
 
 class IngredienteDAO(DAO):
@@ -19,18 +18,21 @@ class IngredienteDAO(DAO):
         if (
             ingrediente is not None
             and isinstance(ingrediente, Ingrediente)
-            and isinstance(ingrediente.codigo, UUID)
+            and isinstance(ingrediente.codigo, str)
         ):
             super().update(ingrediente.codigo, ingrediente)
 
-    def get(self, key: UUID):
-        if isinstance(key, UUID):
+    def get(self, key: str):
+        if isinstance(key, str):
             return super().get(key)
+        else:
+            print(type(key))
+            print("error")
 
     def remove(self, ingrediente: Ingrediente):
         if (
             ingrediente is not None
             and isinstance(ingrediente, Ingrediente)
-            and isinstance(ingrediente.codigo, UUID)
+            and isinstance(ingrediente.codigo, str)
         ):
             return super().remove(ingrediente.codigo)

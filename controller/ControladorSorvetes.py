@@ -4,6 +4,7 @@ from exceptions.SorveteNaoEncontrado import SorveteNaoEncontrado
 from model.Sorvete import Sorvete
 from dao.daoSorvetes import SorveteDAO
 from view.TelaSorvete import TelaSorvete
+import copy
 
 
 class ControladorSorvetes:
@@ -30,8 +31,8 @@ class ControladorSorvetes:
 
         elif opcao == "Ingrediente":
             for sorv in self.__sorvetes_dao.get_all():
-                for ing in sorv.receita.ingredientes_e_quantidades.keys():
-                    if info.upper() in ing.upper():
+                for ing in sorv.receita:
+                    if info.upper() in ing["ingrediente"].nome.upper():
                         res.append(sorv)
 
         if len(res) == 0:
@@ -49,31 +50,28 @@ class ControladorSorvetes:
 
         val = self.__tela_sorvetes.adicionar(ingredientes_dict)
         if val is None:
-            print("none")
             return
 
         sabor, ingredientes_receita = val
 
-        ingredientes_quantidades = {}
+        receita = []
 
         found = False
         for ingrediente in ingredientes:
             for novo_ing in ingredientes_receita.keys():
-                print(ingrediente.nome + " == " + novo_ing)
-
                 if ingrediente.nome == novo_ing:
                     d = {}
                     d["ingrediente"] = ingrediente
                     d["quantidade"] = ingredientes_receita[novo_ing]
 
-                    ingredientes_quantidades[ingrediente.nome] = d
+                    receita.append(d)
                     found = True
                     break
 
         if not found:
             self.__tela_sorvetes.mensagem_erro("Erro: Ingrediente não encontrado")
 
-        novo_sorvete = Sorvete(sabor, ingredientes_quantidades)
+        novo_sorvete = Sorvete(sabor, receita)
 
         self.__sorvetes_dao.add(novo_sorvete)
         self.__tela_sorvetes.mensagem_sucesso("Sorvete adicionado com sucesso")
@@ -107,7 +105,7 @@ class ControladorSorvetes:
 
         sabores = [s.sabor for s in sorvetes]
 
-        if sorvetes == None:
+        if sorvetes is None:
             return
 
         val = self.__tela_sorvetes.produzir(sabores)
@@ -117,21 +115,53 @@ class ControladorSorvetes:
         sabor = val["sabor"]
         quantidade = int(val["quantidade"])
 
+        ings_to_update = []
+        ings_bkp = []
+
         try:
             for sorv in sorvetes:
-                for ing in sorv.receita.ingredientes_e_quantidades.values():
-                    self.__controlador_sistema.controlador_ingredientes.diminuir_quantidade(
-                        ing["ingrediente"], quantidade
-                    )
-
                 if sorv.sabor == sabor:
-                    sorv.quantidade += quantidade
+                    for ing in sorv.receita:
+                        print(ing)
+                        ingrediente = self.__controlador_sistema.controlador_ingredientes.ingredientes_dao.get(
+                            ing["ingrediente"].codigo
+                        )
+
+                        ings_to_update.append(ingrediente)
+                        ings_bkp.append(copy.copy(ingrediente))
+                        print(ingrediente)
+
+                        self.__controlador_sistema.controlador_ingredientes.diminuir_quantidade(
+                            ingrediente, ing["quantidade"] * quantidade
+                        )
+
+                    sorv.quantidade = sorv.quantidade + 1
+                    print(sorv.__dict__)
+
+                    self.__sorvetes_dao.update(sorv)
+
+                    for ing in ings_to_update:
+                        print(ing.quantidade)
+                        self.__controlador_sistema.controlador_ingredientes.ingredientes_dao.update(
+                            ing
+                        )
 
         except Exception as e:
+            ingredientes = (
+                self.__controlador_sistema.controlador_ingredientes.ingredientes_dao.get_all()
+            )
+            for bkp in ings_bkp:
+                for ing in ingredientes:
+                    if ing.codigo == bkp.codigo:
+                        ing.quantidade = bkp.quantidade
+                        self.__controlador_sistema.controlador_ingredientes.ingredientes_dao.update(
+                            ing
+                        )
             self.__tela_sorvetes.mensagem_erro(e)
 
     def listar_sorvetes(self):
         sorvetes = self.__sorvetes_dao.get_all()
+
         sorvetes_para_tela = self.preparar_para_tela(sorvetes)
         self.__tela_sorvetes.info(sorvetes_para_tela)
 
@@ -183,13 +213,16 @@ class ControladorSorvetes:
 
         for sorv in sorvetes:
             ingredientes = []
-            for ing in sorv.receita.ingredientes_e_quantidades.values():
-                receita_item_dict = ing.copy()
-                receita_item_dict["ingrediente"] = ing["ingrediente"].__dict__
+
+            for ing in sorv.receita:
+                receita_item_dict = {
+                    "quantidade": ing["quantidade"],
+                    "ingrediente": ing["ingrediente"].__dict__.copy(),
+                }
 
                 ingredientes.append(receita_item_dict)
 
-            sorvete_dict = sorv.__dict__
+            sorvete_dict = sorv.__dict__.copy()
 
             sorvete_dict["_Sorvete__receita"] = ingredientes
             sorvetes_receitas.append(sorvete_dict)
