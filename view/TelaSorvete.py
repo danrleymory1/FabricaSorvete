@@ -295,16 +295,75 @@ class TelaSorvete(Tela):
 
         return values
 
-    def remover(self):
+    def remover(self, sorvetes): # Falta alterar no controlador
+        sg.ChangeLookAndFeel("DarkTeal")
+        layout = [
+            [sg.Text("Excluir Sorvete", font=("Bahnschrift", 21))],
+            [
+                sg.Text(
+                    "Selecione o sorvete:",
+                    size=(15, 1),
+                    font=("Bahnschrift", 12),
+                ),
+            ],
+            [
+                sg.Combo(
+                    sorvetes,
+                    font=("Bahnschrift", 12),
+                    key="sabor",
+                )
+            ],
+            [sg.Button("Confirmar"), sg.Button("Retornar")],
+        ]
+        self.__window = sg.Window("IceFac").Layout(layout)
+        button, values = self.open()
+        self.close()
+        if button == "Retornar":
+            return
+
+        sabor = values["sabor"]
+        return sabor
+
+    """
         print("---------- Remover Sorvete ----------")
         codigo = self.input_int("Código do Sorvete a ser removido: ")
         return codigo
+    """
 
-    def alterar(self):
+    def alterar(self): # Falta alterar no controlador
+        def alterar(self, sorvetes):
+            sg.ChangeLookAndFeel('DarkTeal')
+            layout = [
+                [sg.Text('Alterar Sorvete', font=('Bahnschrift', 21))],
+                [sg.Text('Selecione o sorvete a alterar:')],
+                [sg.Combo(sorvetes, key='sorvete')],
+                [sg.Text('Novo Nome:'), sg.InputText(default_text="", key='novo_nome')],
+                [sg.Button('Alterar'), sg.Button('Cancelar')]
+            ]
+            self.__window = sg.Window('IceFac').Layout(layout)
+
+            button, values = self.open()
+            if button in ('Retornar', None):
+                self.close()
+                return
+            values['novo_nome'] = values['novo_nome'].strip()
+            if values['novo_nome'] == "":
+                tentar_novamente = self.erro_tentar_novamente("Erro: Nome inválido")
+                if tentar_novamente.lower() == "no":
+                    self.close()
+                    return
+                else:
+                    self.close
+                    return self.alterar(sorvetes)
+            self.close()
+            return values # retornando 'valores', no caso apenas o novo
+
+    """
         print("---------- Alterar Sorvete ----------")
         codigo = self.input_int("Código do Sorvete a ser o: ")
         novo_sabor = input("Novo sabor: ")
         return codigo, novo_sabor
+    """
 
     def produzir(self, sabores):
         sg.ChangeLookAndFeel("DarkTeal")
