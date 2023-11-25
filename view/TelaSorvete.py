@@ -94,7 +94,7 @@ class TelaSorvete(Tela):
             layout
         )
 
-    def adicionar(self, ingredientes):
+    def adicionar(self, ingredientes, sorvetes):
         ing_id_dict = {}
         ing_qtd_dict = {}
 
@@ -124,7 +124,7 @@ class TelaSorvete(Tela):
                 novo_ing_qtd = self.__window["-qtd-"].get()
 
                 if novo_ing_nome is None or novo_ing_nome.strip() == "":
-                    sg.Popup("Erro: Selecione um ingrediente")
+                    sg.Popup("Selecione um ingrediente")
                     continue
 
                 if (
@@ -132,7 +132,7 @@ class TelaSorvete(Tela):
                     or novo_ing_qtd.strip() == ""
                     or not novo_ing_qtd.isnumeric()
                 ):
-                    sg.Popup("Erro: Quantidade inválida")
+                    sg.Popup("Quantidade inválida")
                     continue
 
                 if novo_ing_nome in ing_id_dict.keys():
@@ -162,26 +162,35 @@ class TelaSorvete(Tela):
             elif "-remover-" in button:
                 target = button.replace("-remover-", "")
 
+                nome_remover = ""
+                for k, v in ing_id_dict.items():
+                    if v == target:
+                        nome_remover = k
+
                 self.__window[target].hide_row()
 
                 ing_id_dict = {k: v for k, v in ing_id_dict.items() if v != target}
+                ing_qtd_dict = {
+                    k: v for k, v in ing_qtd_dict.items() if k != nome_remover
+                }
 
             elif button == "Salvar":
                 nome = values["nome"]
 
                 if nome is None or nome.strip() == "":
-                    sg.Popup("Erro: Nome do sorvete inválido\nTente novamente")
+                    sg.Popup("Nome do sorvete inválido\nTente novamente")
+                    continue
+                if nome.upper() in sorvetes:
+                    sg.Popup("Sabor já cadastrado no sistema\nTente novamente")
                     continue
                 if len(ing_qtd_dict) == 0:
-                    sg.Popup(
-                        "Erro: Não há ingredientes\nAdicione ao menos um ingrediente"
-                    )
+                    sg.Popup("Não há ingredientes\nAdicione ao menos um ingrediente")
                     continue
 
                 self.close()
                 return (nome, ing_qtd_dict)
 
-            elif button == "Cancelar":
+            elif button in ("Cancelar", None):
                 self.close()
                 return None
 
@@ -290,19 +299,18 @@ class TelaSorvete(Tela):
 
         self.close()
 
-        if button == "Retornar":
+        if button in ("Retornar", None):
             return
 
         return values
 
-    def remover(self, sorvetes): # Falta alterar no controlador
+    def remover(self, sorvetes):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Excluir Sorvete", font=("Bahnschrift", 21))],
             [
                 sg.Text(
                     "Selecione o sorvete:",
-                    size=(15, 1),
                     font=("Bahnschrift", 12),
                 ),
             ],
@@ -313,57 +321,67 @@ class TelaSorvete(Tela):
                     key="sabor",
                 )
             ],
-            [sg.Button("Confirmar"), sg.Button("Retornar")],
+            [sg.Button("Confirmar"), sg.Button("Cancelar")],
         ]
         self.__window = sg.Window("IceFac").Layout(layout)
         button, values = self.open()
         self.close()
-        if button == "Retornar":
+
+        if button in ("Cancelar", None):
             return
 
         sabor = values["sabor"]
-        return sabor
-
-    """
-        print("---------- Remover Sorvete ----------")
-        codigo = self.input_int("Código do Sorvete a ser removido: ")
-        return codigo
-    """
-
-    def alterar(self): # Falta alterar no controlador
-        def alterar(self, sorvetes):
-            sg.ChangeLookAndFeel('DarkTeal')
-            layout = [
-                [sg.Text('Alterar Sorvete', font=('Bahnschrift', 21))],
-                [sg.Text('Selecione o sorvete a alterar:')],
-                [sg.Combo(sorvetes, key='sorvete')],
-                [sg.Text('Novo Nome:'), sg.InputText(default_text="", key='novo_nome')],
-                [sg.Button('Alterar'), sg.Button('Cancelar')]
-            ]
-            self.__window = sg.Window('IceFac').Layout(layout)
-
-            button, values = self.open()
-            if button in ('Retornar', None):
+        if sabor is None or sabor.strip() == "":
+            tentar_novamente = self.erro_tentar_novamente("Nenhum sabor selecionado")
+            if tentar_novamente.lower() == "no":
                 self.close()
                 return
-            values['novo_nome'] = values['novo_nome'].strip()
-            if values['novo_nome'] == "":
-                tentar_novamente = self.erro_tentar_novamente("Erro: Nome inválido")
-                if tentar_novamente.lower() == "no":
-                    self.close()
-                    return
-                else:
-                    self.close
-                    return self.alterar(sorvetes)
-            self.close()
-            return values # retornando 'valores', no caso apenas o novo
+            else:
+                self.close()
+                return self.remover(sorvetes)
 
-    """
-        print("---------- Alterar Sorvete ----------")
-        codigo = self.input_int("Código do Sorvete a ser o: ")
-        novo_sabor = input("Novo sabor: ")
-        return codigo, novo_sabor
-    """
+        return sabor
+
+    # TODO: se houver tempo, colocar possibilidade de alterar a receita nessa tela
+    def alterar(self, sorvetes):
+        sg.ChangeLookAndFeel("DarkTeal")
+        layout = [
+            [sg.Text("Alterar Sorvete", font=("Bahnschrift", 21))],
+            [sg.Text("Selecione o sorvete a alterar:")],
+            [sg.Combo(sorvetes, key="sorvete")],
+            [sg.Text("Novo Nome:"), sg.InputText(default_text="", key="novo_sabor")],
+            [sg.Button("Alterar"), sg.Button("Cancelar")],
+        ]
+        self.__window = sg.Window("IceFac").Layout(layout)
+
+        button, values = self.open()
+        if button in ("Cancelar", None):
+            self.close()
+            return
+
+        values["novo_sabor"] = values["novo_sabor"].strip()
+
+        if values["novo_sabor"] == "":
+            tentar_novamente = self.erro_tentar_novamente("Nome inválido")
+            if tentar_novamente.lower() == "no":
+                self.close()
+                return
+            else:
+                self.close()
+                return self.alterar(sorvetes)
+        if values["novo_sabor"].upper() in [s.upper() for s in sorvetes]:
+            tentar_novamente = self.erro_tentar_novamente(
+                "Sabor já inserido no sistema"
+            )
+            if tentar_novamente.lower() == "no":
+                self.close()
+                return
+            else:
+                self.close()
+                return self.alterar(sorvetes)
+
+        self.close()
+        return values
 
     def produzir(self, sabores):
         sg.ChangeLookAndFeel("DarkTeal")
@@ -394,7 +412,7 @@ class TelaSorvete(Tela):
 
         self.close()
 
-        if button == "Retornar":
+        if button in ("Retornar", None):
             return
 
         if button == "Confirmar" and (
@@ -407,5 +425,8 @@ class TelaSorvete(Tela):
                 return
             else:
                 return self.produzir(sabores)
-
+        elif button == "Confirmar" and (
+            values["sabor"] is None or values["sabor"].strip() == ""
+        ):
+            res = self.erro_tentar_novamente("Selecione um sabor")
         return values

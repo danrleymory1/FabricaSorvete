@@ -48,7 +48,9 @@ class ControladorSorvetes:
 
         ingredientes_dict = [i.__dict__["_Ingrediente__nome"] for i in ingredientes]
 
-        val = self.__tela_sorvetes.adicionar(ingredientes_dict)
+        sorvetes = [s.sabor.upper() for s in self.__sorvetes_dao.get_all()]
+
+        val = self.__tela_sorvetes.adicionar(ingredientes_dict, sorvetes)
         if val is None:
             return
 
@@ -166,27 +168,49 @@ class ControladorSorvetes:
         self.__tela_sorvetes.info(sorvetes_para_tela)
 
     def alterar_sorvete(self):
-        (codigo, novo_sabor) = self.__tela_sorvetes.alterar()
+        sorvetes = self.__sorvetes_dao.get_all()
+        sorvetes_string = [s.sabor for s in sorvetes]
+
+        values = self.__tela_sorvetes.alterar(sorvetes_string)
+        if values is None:
+            return
+
+        sabor = values["sorvete"]
+        novo_sabor = values["novo_sabor"]
 
         try:
-            for sorv in self.__sorvetes:
-                if sorv.codigo == codigo:
+            for sorv in sorvetes:
+                if sorv.sabor == sabor:
                     sorv.sabor = novo_sabor
-                    return True
-            raise SorveteNaoEncontrado(codigo)
+                    self.__sorvetes_dao.update(sorv)
+                    self.__tela_sorvetes.mensagem_sucesso(
+                        "Sorvete alterado com sucesso"
+                    )
+                    return
+
+            raise SorveteNaoEncontrado(sabor)
 
         except Exception as e:
             self.__tela_sorvetes.mensagem_erro(e)
 
     def remover_sorvete(self):
-        codigo = self.__tela_sorvetes.remover()
+        sorvetes = self.__sorvetes_dao.get_all()
+        sorvetes_string = [s.sabor for s in sorvetes]
+
+        sabor = self.__tela_sorvetes.remover(sorvetes_string)
+        if sabor is None:
+            return
 
         try:
-            for sorv in self.__sorvetes:
-                if sorv.codigo == codigo:
-                    self.__sorvetes.remove(sorv)
-                    return True
-            raise SorveteNaoEncontrado(codigo)
+            for sorv in sorvetes:
+                if sorv.sabor == sabor:
+                    self.__sorvetes_dao.remove(sorv)
+                    self.__tela_sorvetes.mensagem_sucesso(
+                        "Sorvete removido com sucesso"
+                    )
+                    return
+
+            raise SorveteNaoEncontrado(sabor)
 
         except Exception as e:
             self.__tela_sorvetes.mensagem_erro(e)
