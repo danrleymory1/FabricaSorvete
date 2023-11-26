@@ -82,7 +82,7 @@ class TelaTransferencia(Tela):
             layout
         )
 
-    def adicionar(self, sorvetes):
+    def adicionar(self, depositos, sorvetes):
         sorv_id_dict = {}
         sorv_qtd_dict = {}
 
@@ -90,6 +90,10 @@ class TelaTransferencia(Tela):
 
         layout = [
             [sg.Text("Nova Transferência")],
+            [
+                sg.Text("Depósito Destino: "),
+                sg.Combo(depositos, key="deposito"),
+            ],
             [sg.Text("Produtos: ")],
             [sg.Text("", key="-sorvetes-")],
             [
@@ -106,7 +110,7 @@ class TelaTransferencia(Tela):
 
         while True:
             button, values = self.open()
-
+            deposito = values["deposito"]
             if button == "Adicionar Sorvete":
                 novo_sorv_sabor = self.__window["-sorv-"].get()
                 novo_sorv_qtd = self.__window["-qtd-"].get()
@@ -150,15 +154,23 @@ class TelaTransferencia(Tela):
             elif "-remover-" in button:
                 target = button.replace("-remover-", "")
 
+                sorvete_remover = ""
+                for k, v in sorv_id_dict.items():
+                    if v == target:
+                        sorvete_remover = k
+
                 self.__window[target].hide_row()
 
                 sorv_id_dict = {k: v for k, v in sorv_id_dict.items() if v != target}
+                sorv_qtd_dict = {
+                    k: v for k, v in sorv_qtd_dict.items() if k != sorvete_remover
+                }
 
             elif button == "Salvar":
-                sabor = values["sabor"]
+                sorvete = values["sorvete"]
 
-                if sabor is None or sabor.strip() == "":
-                    sg.Popup("Erro: sabor do sorvete inválido\nTente novamente")
+                if sorvete is None or sorvete.strip() == "":
+                    sg.Popup("Erro: Sorvete inválido\nTente novamente")
                     continue
                 if len(sorv_qtd_dict) == 0:
                     sg.Popup(
@@ -167,7 +179,7 @@ class TelaTransferencia(Tela):
                     continue
 
                 self.close()
-                return sabor, sorv_qtd_dict
+                return deposito, sorvete, sorv_qtd_dict
 
             elif button == "Cancelar":
                 self.close()
@@ -227,6 +239,14 @@ class TelaTransferencia(Tela):
                 [
                     sg.Text(
                         f"Data: {transf['_Transferencia__data']}",
+                        text_color="white",
+                    )
+                ],
+            )
+            transfs.append(
+                [
+                    sg.Text(
+                        f"Depósito Destino: {transf['_Transferencia__deposito_dest']}",
                         text_color="white",
                     )
                 ],

@@ -186,7 +186,7 @@ class TelaSorvete(Tela):
                     continue
 
                 self.close()
-                return (nome, ing_qtd_dict)
+                return nome, ing_qtd_dict
 
             elif button in ("Cancelar", None):
                 self.close()
