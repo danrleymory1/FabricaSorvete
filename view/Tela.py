@@ -49,11 +49,11 @@ class Tela(ABC):
         pass
 
     @abstractmethod
-    def remover(self):
+    def remover(self, value):
         pass
 
     @abstractmethod
-    def alterar(self):
+    def alterar(self, value):
         pass
 
     def mensagem(self, texto):
