@@ -1,54 +1,83 @@
+from dao.daoDepositos import DepositoDAO
 from model.Deposito import Deposito
 from view.TelaDeposito import TelaDeposito
 
 
 class ControladorDepositos:
     def __init__(self, controlador_sistema):
-        self.__depositos = []
         self.__tela_deposito = TelaDeposito()
         self.__controlador_sistema = controlador_sistema
-
-    @property
-    def depositos(self):
-        return self.__depositos
+        self.__depositos_dao = DepositoDAO()
 
     def buscar_deposito(self):
-        codigo = self.__tela_deposito.buscar()
+        descricao = self.__tela_deposito.buscar()
 
-        for dep in self.__depositos:
-            if dep.codigo == codigo:
-                self.__tela_deposito.info(dep)
-                return
+        if descricao is None:
+            return
 
-        self.__tela_deposito.mensagem_erro("Depósito não encontrado")
+        res = []
+
+        for ing in self.__depositos_dao.get_all():
+            if descricao.upper() in ing.descricao.upper():
+                res.append(ing.__dict__)
+
+        if len(res) == 0:
+            self.__tela_deposito.mensagem_erro("Depósito não encontrado")
+        else:
+            self.__tela_deposito.info(res)
 
     def adicionar_deposito(self):
-        descricao = self.__tela_deposito.adicionar()
+        depositos = [
+            i.__dict__["_Deposito__descricao"] for i in self.__depositos_dao.get_all()
+        ]
 
-        novo_deposito = Deposito(descricao)
+        descricao = self.__tela_deposito.adicionar(depositos)
 
-        self.__depositos.append(novo_deposito)
+        if descricao is None:
+            return
 
-        self.__tela_deposito.mensagem_sucesso("Novo depósito adicionado")
+        novo_deposito = Deposito(str(descricao))
+
+        self.__depositos_dao.add(novo_deposito)
+
+        self.__tela_deposito.mensagem_sucesso("Depósito adicionado com sucesso")
 
     def remover_deposito(self):
-        codigo = self.__tela_deposito.remover()
+        depositos = [
+            i.__dict__["_Deposito__descricao"] for i in self.__depositos_dao.get_all()
+        ]
 
-        for dep in self.__depositos:
-            if dep.codigo == codigo:
-                self.__depositos.remove(dep)
-                self.__tela_deposito.mensagem_sucesso("Depósito removido")
+        descricao = self.__tela_deposito.remover(depositos)
+
+        if descricao is None:
+            return
+
+        for ing in self.__depositos_dao.get_all():
+            if ing.descricao == descricao:
+                self.__depositos_dao.remove(ing)
+                self.__tela_deposito.mensagem_sucesso("Depósito removido com sucesso")
                 return
 
         self.__tela_deposito.mensagem_erro("Depósito não encontrado")
 
     def alterar_deposito(self):
-        (codigo, descricao) = self.__tela_deposito.alterar()
+        depositos = [
+            i.__dict__["_Deposito__descricao"] for i in self.__depositos_dao.get_all()
+        ]
 
-        for i, dep in enumerate(self.__depositos):
-            if dep.codigo == codigo:
-                self.__depositos[i].descricao = descricao
-                self.__tela_deposito.mensagem_sucesso("Depósito alterado")
+        values = self.__tela_deposito.alterar(depositos)
+
+        if values == None:
+            return
+
+        nova_descricao = values["descricao"]
+        deposito = values["deposito"]
+
+        for ing in self.__depositos_dao.get_all():
+            if ing.descricao == deposito:
+                ing.descricao = nova_descricao
+                self.__depositos_dao.update(ing)
+                self.__tela_deposito.mensagem_sucesso("Depósito alterado com sucesso")
                 return
 
         self.__tela_deposito.mensagem_erro("Depósito não encontrado")
@@ -69,13 +98,9 @@ class ControladorDepositos:
             lista_opcoes[self.__tela_deposito.opcoes()]()
 
     def listar_depositos(self):
-        self.__tela_deposito.mensagem("--- Depósitos ---")
-        for dep in self.__depositos:
-            self.__tela_deposito.info(dep)
+        dict_list = []
 
-    def buscar_por_codigo(self, codigo):
-        for dep in self.__depositos:
-            if dep.codigo == codigo:
-                return dep
+        for dep in self.__depositos_dao.get_all():
+            dict_list.append(dep.__dict__)
 
-        return None
+        self.__tela_deposito.info(dict_list)

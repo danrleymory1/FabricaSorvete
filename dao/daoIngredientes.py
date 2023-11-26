@@ -25,9 +25,6 @@ class IngredienteDAO(DAO):
     def get(self, key: str):
         if isinstance(key, str):
             return super().get(key)
-        else:
-            print(type(key))
-            print("error")
 
     def remove(self, ingrediente: Ingrediente):
         if (

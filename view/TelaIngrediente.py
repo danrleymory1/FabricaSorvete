@@ -211,12 +211,11 @@ class TelaIngrediente(Tela):
         if button == "Retornar":
             return
 
+        if values["nome"] is None or values["nome"].strip() == "":
+            return
+
         nome = values["nome"]
         return nome
-
-        # print("---------- Buscar Ingrediente ----------")
-        # codigo = self.input_int("Código do Ingrediente a ser encontrado: ")
-        # return codigo
 
     def remover(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
@@ -246,12 +245,6 @@ class TelaIngrediente(Tela):
 
         nome = values["nome"]
         return nome
-
-    """
-        print("---------- Remover Ingrediente ----------")
-        codigo = self.input_int("Código do Ingrediente a ser removido: ")
-        return codigo
-    """
 
     def alterar(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
@@ -304,11 +297,6 @@ class TelaIngrediente(Tela):
             return
 
         return values
-
-        # print("---------- Alterar Ingrediente ----------")
-        # codigo = self.input_int("Código do Ingrediente a ser alterado: ")
-        # novo_nome = input("Novo nome: ")
-        # return codigo, novo_nome
 
     def alterar_quantidade(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")

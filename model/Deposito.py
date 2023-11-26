@@ -1,8 +1,19 @@
+import uuid
+
+
 class Deposito:
     def __init__(self, descricao: str):
-        super().__init__()
+        self.__codigo = uuid.uuid4()
         self.__descricao = descricao
         self.__sorvetes = []
+
+    @property
+    def codigo(self):
+        return self.__codigo
+
+    @codigo.setter
+    def codigo(self, codigo):
+        self.__codigo = codigo
 
     @property
     def descricao(self):
