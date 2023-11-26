@@ -208,7 +208,60 @@ class TelaTransferencia(Tela):
         produtos_dict[codigo] = quantidade
     """
 
-    def info(self, transferencia):
+    def info(self, transferencias_produtos):
+        transfs = []
+        transfs.append([sg.Text("Transferências")])
+        for transf in transferencias_produtos:
+            transfs.append(
+                [
+                    sg.Text("ID: ", text_color="white"),
+                    sg.InputText(
+                        transf["_Transferencia__codigo"],
+                        use_readonly_for_disable=True,
+                        disabled=True,
+                        key=f"-id-transf--{transf['_Transferencia__codigo']}",
+                    ),
+                ],
+            )
+            transfs.append(
+                [
+                    sg.Text(
+                        f"Data: {transf['_Transferencia__data']}",
+                        text_color="white",
+                    )
+                ],
+            )
+            sorvs = [[sg.Text("Produtos: ")]]
+            for sorv in transf["_Transderencia__produtos"]:
+                layout = [
+                    sg.Text(
+                        f"- {sorv['quantidade']} {sorv['produtos']['_Sorvete__sabor']}"
+                    ),
+                ]
+
+                sorvs.append(layout)
+
+            transfs.append([sg.Column(sorvs)])
+
+        if len(transferencias_produtos) == 0:
+            transfs.append([sg.Text("Não há transferências realizadas")])
+
+        transfs.append([sg.Button("Ok")])
+        info_w = sg.Window("Transferências(s)", transfs, finalize=True)
+
+        # altera estilo do elemento que contém texto na chave,
+        # para parecer elemento de texto comum
+        for el in info_w.element_list():
+            if el is not None and el.key is not None:
+                if "-id-transf--" in el.key:
+                    el.Widget.config(readonlybackground=sg.theme_background_color())
+                    el.Widget.config(borderwidth=0)
+
+        info_w.Read()
+        info_w.close()
+        return
+
+    """
         print("---------- Transferência ----------")
         print("Codigo: ", transferencia.codigo)
         print("Código depósito: ", transferencia.deposito_dest.codigo)
@@ -217,6 +270,7 @@ class TelaTransferencia(Tela):
             print("--- Produto ---")
             print("Código: ", cod)
             print("Quantidade: ", qtd)
+"""
 
     def buscar(self):
         sg.ChangeLookAndFeel("DarkTeal")
