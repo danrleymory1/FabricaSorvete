@@ -45,7 +45,7 @@ class TelaSistema(Tela):
                     "Transferencias", key=3, font=("Bahnschrift", 15), size=(15, 1)
                 )
             ],
-            [sg.Button("Depositos", key=4, font=("Bahnschrift", 15), size=(15, 1))],
+            [sg.Button("Depósitos", key=4, font=("Bahnschrift", 15), size=(15, 1))],
             [sg.Column([[sg.Button("Sair", key=0)]], justification="center")],
         ]
 
@@ -59,9 +59,7 @@ class TelaSistema(Tela):
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(
-            layout
-        )
+        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(layout)
 
     def buscar(self):
         return

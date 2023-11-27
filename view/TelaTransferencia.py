@@ -11,7 +11,7 @@ class TelaTransferencia(Tela):
     def opcoes(self):
         self.init_opcoes()
         values, button = self.__window.Read()
-        # opcao = 0
+        opcao = 0
         if values == "1":
             opcao = 1
         if values == "2":
@@ -59,7 +59,7 @@ class TelaTransferencia(Tela):
             ],
             [
                 sg.Button(
-                    "Mostrar Transferência",
+                    "Buscar Transferências",
                     key="3",
                     font=("Bahnschrift", 12),
                     size=(20, 1),
@@ -78,7 +78,9 @@ class TelaTransferencia(Tela):
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(layout)
+        self.__window = sg.Window("IceFac - Tranferências", icon="IceFac.ico").Layout(
+            layout
+        )
 
     def adicionar(self, depositos, sabores):
         sorv_id_dict = {}
@@ -104,7 +106,7 @@ class TelaTransferencia(Tela):
             [sg.Button("Salvar"), sg.Button("Cancelar")],
         ]
 
-        self.__window = sg.Window("Transferência", layout, resizable=True)
+        self.__window = sg.Window("IceFac - Transferência", layout, resizable=True)
 
         while True:
             button, values = self.open()
@@ -236,10 +238,10 @@ class TelaTransferencia(Tela):
             transfs.append([sg.Column(sorvs)])
 
         if len(transferencias) == 0:
-            transfs.append([sg.Text("Não há transferências realizadas")])
+            transfs.append([sg.Text("Nenhuma trasnferência encontrada")])
 
         transfs.append([sg.Button("Ok")])
-        info_w = sg.Window("Transferências(s)", transfs, finalize=True)
+        info_w = sg.Window("IceFac - Transferências", transfs, finalize=True)
 
         # altera estilo do elemento que contém texto na chave,
         # para parecer elemento de texto comum
@@ -268,7 +270,7 @@ class TelaTransferencia(Tela):
                 sg.InputText("", key="info"),
             ],
             [
-                sg.Button("De", key="data_inicio_button"),
+                sg.Button("De", key="de_button"),
                 sg.InputText(
                     "",
                     use_readonly_for_disable=True,
@@ -277,7 +279,7 @@ class TelaTransferencia(Tela):
                 ),
             ],
             [
-                sg.Button("Até", key="data_fim_button"),
+                sg.Button("Até", key="ate_button"),
                 sg.InputText(
                     "",
                     use_readonly_for_disable=True,
@@ -288,10 +290,10 @@ class TelaTransferencia(Tela):
             [sg.Button("Buscar"), sg.Button("Retornar")],
         ]
 
-        self.__window = sg.Window("IceFac", layout, finalize=True)
+        self.__window = sg.Window("IceFac - Transferências", layout, finalize=True)
         for el in self.__window.element_list():
             if el is not None and el.key is not None:
-                if "display" in el.key:
+                if "data" in el.key:
                     el.Widget.config(readonlybackground=sg.theme_background_color())
                     el.Widget.config(borderwidth=0)
 
@@ -310,13 +312,13 @@ class TelaTransferencia(Tela):
                     self.close()
                     return self.buscar()
 
-            elif button == "data_inicio_button":
+            elif button == "de_button":
                 data_inicio = sg.popup_get_date(close_when_chosen=True)
                 if data_inicio:
                     m, d, y = data_inicio
                     self.__window["data_inicio"].update(f"{d}/{m}/{y}")
 
-            elif button == "data_fim_button":
+            elif button == "ate_button":
                 data_fim = sg.popup_get_date(close_when_chosen=True)
                 if data_fim:
                     m, d, y = data_fim

@@ -49,10 +49,14 @@ class ControladorTransferencias:
                             raise SorveteInsuficiente(s.sabor, qtd, s.quantidade)
 
                         s.quantidade = nova_quantidade
+                        self.__controlador_sistema.controlador_sorvetes.sorvetes_dao.update(
+                            s
+                        )
                         sorvetes_quantidades.append(s_q)
 
             except Exception as e:
                 self.__tela_transferencia.mensagem_erro(e)
+                return
 
         deposito_nova_transf = None
         for deposito in depositos:
@@ -63,9 +67,7 @@ class ControladorTransferencias:
 
         self.__transferencias_dao.add(transf)
 
-        self.__tela_transferencia.mensagem_sucesso(
-            "Transferência adicionada com sucesso"
-        )
+        self.__tela_transferencia.mensagem_sucesso("Transferência feita com sucesso")
 
     def listar_transferencias(self):
         transferencias = self.__transferencias_dao.get_all()
@@ -122,10 +124,10 @@ class ControladorTransferencias:
                     if data_inicio and data_fim:
                         if t.data >= data_inicio and t.data <= data_fim:
                             res.append(t)
-                    if data_inicio:
+                    elif data_inicio:
                         if t.data >= data_inicio:
                             res.append(t)
-                    if data_fim:
+                    elif data_fim:
                         if t.data >= data_fim:
                             res.append(t)
                     else:

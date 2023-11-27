@@ -90,7 +90,7 @@ class TelaSorvete(Tela):
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(layout)
+        self.__window = sg.Window("IceFac - Sorvetes", icon="IceFac.ico").Layout(layout)
 
     def adicionar(self, ingredientes, sorvetes):
         ing_id_dict = {}
@@ -112,7 +112,7 @@ class TelaSorvete(Tela):
             [sg.Button("Salvar"), sg.Button("Cancelar")],
         ]
 
-        self.__window = sg.Window("Ingredientes", layout, resizable=True)
+        self.__window = sg.Window("IceFac - Sorvetes", layout, resizable=True)
 
         while True:
             button, values = self.open()
@@ -253,7 +253,7 @@ class TelaSorvete(Tela):
             sorvs.append([sg.Text("Não há ingredientes cadastrados")])
 
         sorvs.append([sg.Button("Ok")])
-        info_w = sg.Window("Ingredientes", sorvs, finalize=True)
+        info_w = sg.Window("IceFac - Sorvetes", sorvs, finalize=True)
 
         # altera estilo do elemento que contém texto na chave,
         # para parecer elemento de texto comum
@@ -279,7 +279,7 @@ class TelaSorvete(Tela):
             [sg.Button("Buscar"), sg.Button("Retornar")],
         ]
 
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Sorvetes").Layout(layout)
 
         button, values = self.open()
 
@@ -321,7 +321,7 @@ class TelaSorvete(Tela):
             ],
             [sg.Button("Confirmar"), sg.Button("Cancelar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Sorvetes").Layout(layout)
         button, values = self.open()
         self.close()
 
@@ -340,7 +340,6 @@ class TelaSorvete(Tela):
 
         return sabor
 
-    # TODO: se houver tempo, colocar possibilidade de alterar a receita nessa tela
     def alterar(self, sorvetes):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
@@ -350,7 +349,7 @@ class TelaSorvete(Tela):
             [sg.Text("Novo Nome:"), sg.InputText(default_text="", key="novo_sabor")],
             [sg.Button("Alterar"), sg.Button("Cancelar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Sorvetes").Layout(layout)
 
         button, values = self.open()
         if button in ("Cancelar", None):
@@ -405,7 +404,7 @@ class TelaSorvete(Tela):
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Sorvetes").Layout(layout)
         button, values = self.open()
 
         self.close()

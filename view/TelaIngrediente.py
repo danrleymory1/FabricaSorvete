@@ -92,19 +92,21 @@ class TelaIngrediente(Tela):
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(layout)
+        self.__window = sg.Window("IceFac - Ingredientes", icon="IceFac.ico").Layout(
+            layout
+        )
 
     def adicionar(self, ingredientes):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
             [sg.Text("Novo Ingredidente", font=("Bahnschrift", 21))],
             [
-                sg.Text("Nome:", size=(15, 1), font=("Bahnschrift", 15)),
+                sg.Text("Nome:", font=("Bahnschrift", 15)),
                 sg.InputText("", key="nome"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Ingredientes").Layout(layout)
 
         button, values = self.open()
 
@@ -196,13 +198,13 @@ class TelaIngrediente(Tela):
         layout = [
             [sg.Text("Buscar Ingrediente", font=("Bahnschrift", 21))],
             [
-                sg.Text("Nome:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.Text("Nome:", font=("Bahnschrift", 12)),
                 sg.InputText("", key="nome"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
 
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Ingredientes").Layout(layout)
 
         button, values = self.open()
 
@@ -224,7 +226,6 @@ class TelaIngrediente(Tela):
             [
                 sg.Text(
                     "Selecione o ingrediente:",
-                    size=(15, 1),
                     font=("Bahnschrift", 12),
                 ),
             ],
@@ -237,7 +238,7 @@ class TelaIngrediente(Tela):
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Ingredientes").Layout(layout)
         button, values = self.open()
         self.close()
         if button == "Retornar":
@@ -253,7 +254,6 @@ class TelaIngrediente(Tela):
             [
                 sg.Text(
                     "Selecione o ingrediente:",
-                    size=(15, 1),
                     font=("Bahnschrift", 12),
                 ),
             ],
@@ -265,12 +265,12 @@ class TelaIngrediente(Tela):
                 )
             ],
             [
-                sg.Text("Novo nome:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.Text("Novo nome:", font=("Bahnschrift", 12)),
                 sg.InputText("", key="nome"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Ingredientes").Layout(layout)
         button, values = self.open()
 
         if button == "Retornar":
@@ -305,7 +305,6 @@ class TelaIngrediente(Tela):
             [
                 sg.Text(
                     "Selecione o ingrediente:",
-                    size=(15, 1),
                     font=("Bahnschrift", 12),
                 ),
             ],
@@ -317,12 +316,12 @@ class TelaIngrediente(Tela):
                 )
             ],
             [
-                sg.Text("Quantidade:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.Text("Quantidade:", font=("Bahnschrift", 12)),
                 sg.InputText("", key="quantidade"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Ingredientes").Layout(layout)
         button, values = self.open()
 
         self.close()

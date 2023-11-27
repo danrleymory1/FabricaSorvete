@@ -36,7 +36,7 @@ class TelaDeposito(Tela):
     def init_opcoes(self):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
-            [sg.Text("Depositos", font=("Bahnschrift", 21))],
+            [sg.Text("Depósitos", font=("Bahnschrift", 21))],
             [
                 sg.Text(
                     "Escolha uma das opções abaixo:",
@@ -51,22 +51,22 @@ class TelaDeposito(Tela):
             ],
             [
                 sg.Button(
-                    "Listar Depositos", key=2, font=("Bahnschrift", 12), size=(20, 1)
+                    "Listar Depósitos", key=2, font=("Bahnschrift", 12), size=(20, 1)
                 )
             ],
             [
                 sg.Button(
-                    "Mostrar Deposito", key=3, font=("Bahnschrift", 12), size=(20, 1)
+                    "Mostrar Depósito", key=3, font=("Bahnschrift", 12), size=(20, 1)
                 )
             ],
             [
                 sg.Button(
-                    "Alterar Deposito", key=4, font=("Bahnschrift", 12), size=(20, 1)
+                    "Alterar Depósito", key=4, font=("Bahnschrift", 12), size=(20, 1)
                 )
             ],
             [
                 sg.Button(
-                    "Excluir Deposito", key=5, font=("Bahnschrift", 12), size=(20, 1)
+                    "Excluir Depósito", key=5, font=("Bahnschrift", 12), size=(20, 1)
                 )
             ],
             [sg.Column([[sg.Cancel("Retornar", key=0)]], justification="center")],
@@ -82,7 +82,7 @@ class TelaDeposito(Tela):
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", size=(640, 360), icon="IceFac.ico").Layout(
+        self.__window = sg.Window("IceFac - Depósitos", icon="IceFac.ico").Layout(
             layout
         )
 
@@ -91,12 +91,12 @@ class TelaDeposito(Tela):
         layout = [
             [sg.Text("Novo Depósito", font=("Bahnschrift", 21))],
             [
-                sg.Text("Descrição:", size=(15, 1), font=("Bahnschrift", 15)),
+                sg.Text("Descrição:", font=("Bahnschrift", 15)),
                 sg.InputText("", key="descricao"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Depósitos").Layout(layout)
 
         button, values = self.open()
 
@@ -161,7 +161,7 @@ class TelaDeposito(Tela):
             deps.append([sg.Text("Não há depósitos cadastrados")])
 
         deps.append([sg.Button("Ok")])
-        info_w = sg.Window("Depósitos", deps, finalize=True)
+        info_w = sg.Window("IceFac - Depósitos", deps, finalize=True)
 
         # altera estilo do elemento que contém texto na chave,
         # para parecer elemento de texto comum
@@ -180,13 +180,13 @@ class TelaDeposito(Tela):
         layout = [
             [sg.Text("Buscar Depósito", font=("Bahnschrift", 21))],
             [
-                sg.Text("Descrição:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.Text("Descrição:", font=("Bahnschrift", 12)),
                 sg.InputText("", key="descricao"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
 
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Depósitos").Layout(layout)
 
         button, values = self.open()
 
@@ -208,7 +208,6 @@ class TelaDeposito(Tela):
             [
                 sg.Text(
                     "Selecione o depósito:",
-                    size=(15, 1),
                     font=("Bahnschrift", 12),
                 ),
             ],
@@ -217,11 +216,11 @@ class TelaDeposito(Tela):
                     depositos,
                     font=("Bahnschrift", 12),
                     key="descricao",
-                )
+                ),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Depósitos").Layout(layout)
         button, values = self.open()
         self.close()
         if button == "Retornar":
@@ -240,7 +239,6 @@ class TelaDeposito(Tela):
             [
                 sg.Text(
                     "Selecione o depósito:",
-                    size=(15, 1),
                     font=("Bahnschrift", 12),
                 ),
             ],
@@ -249,15 +247,15 @@ class TelaDeposito(Tela):
                     depositos,
                     font=("Bahnschrift", 12),
                     key="deposito",
-                )
+                ),
             ],
             [
-                sg.Text("Nova descrição:", size=(15, 1), font=("Bahnschrift", 12)),
+                sg.Text("Nova descrição:", font=("Bahnschrift", 12)),
                 sg.InputText("", key="descricao"),
             ],
             [sg.Button("Confirmar"), sg.Button("Retornar")],
         ]
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac - Depósitos").Layout(layout)
         button, values = self.open()
 
         if button == "Retornar":
