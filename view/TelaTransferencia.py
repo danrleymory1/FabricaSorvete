@@ -78,11 +78,9 @@ class TelaTransferencia(Tela):
         # Layout com a coluna centralizada
         layout = [[column]]
 
-        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(
-            layout
-        )
+        self.__window = sg.Window("IceFac", icon="IceFac.ico").Layout(layout)
 
-    def adicionar(self, depositos, sorvetes):
+    def adicionar(self, depositos, sabores):
         sorv_id_dict = {}
         sorv_qtd_dict = {}
 
@@ -98,7 +96,7 @@ class TelaTransferencia(Tela):
             [sg.Text("", key="-sorvetes-")],
             [
                 sg.Text("Sorvete: "),
-                sg.Combo(sorvetes, key=f"-sorv-"),
+                sg.Combo(sabores, key=f"-sorv-"),
                 sg.Text("Quantidade: "),
                 sg.InputText("", key=f"-qtd-"),
             ],
@@ -120,9 +118,9 @@ class TelaTransferencia(Tela):
                     continue
 
                 if (
-                        novo_sorv_qtd is None
-                        or novo_sorv_qtd.strip() == ""
-                        or not novo_sorv_qtd.isnumeric()
+                    novo_sorv_qtd is None
+                    or novo_sorv_qtd.strip() == ""
+                    or not novo_sorv_qtd.isnumeric()
                 ):
                     sg.Popup("Erro: Quantidade inválida")
                     continue
@@ -167,19 +165,17 @@ class TelaTransferencia(Tela):
                 }
 
             elif button == "Salvar":
-                sorvete = values["sorvete"]
+                sorvete = values["-sorv-"]
 
                 if sorvete is None or sorvete.strip() == "":
                     sg.Popup("Erro: Sorvete inválido\nTente novamente")
                     continue
                 if len(sorv_qtd_dict) == 0:
-                    sg.Popup(
-                        "Erro: Não há sorvetes\nAdicione ao menos um sorvete"
-                    )
+                    sg.Popup("Erro: Não há sorvetes\nAdicione ao menos um sorvete")
                     continue
 
                 self.close()
-                return deposito, sorvete, sorv_qtd_dict
+                return deposito, sorv_qtd_dict
 
             elif button == "Cancelar":
                 self.close()
@@ -198,32 +194,10 @@ class TelaTransferencia(Tela):
             id,
         )
 
-    """    
-        print("---------- Nova Transferência  ----------")
-        deposito = self.input_int("Depósito de destino = ")
-        produtos = {}
-
-        while True:
-            self.adicionar_produto(produtos)
-
-            continuar = input("Acrescentar novo produto? [S/N] ")
-            if not continuar == "S":
-                break
-
-        return deposito, produtos
-    """
-
-    """ 
-    def adicionar_produto(self, produtos_dict):
-        codigo = self.input_int("Código do produto = ")
-        quantidade = self.input_int("Quantidade do produto = ")
-        produtos_dict[codigo] = quantidade
-    """
-
-    def info(self, transferencias_produtos):
+    def info(self, transferencias):
         transfs = []
         transfs.append([sg.Text("Transferências")])
-        for transf in transferencias_produtos:
+        for transf in transferencias:
             transfs.append(
                 [
                     sg.Text("ID: ", text_color="white"),
@@ -252,18 +226,16 @@ class TelaTransferencia(Tela):
                 ],
             )
             sorvs = [[sg.Text("Produtos: ")]]
-            for sorv in transf["_Transderencia__produtos"]:
+            for sorv in transf["_Transferencia__produtos"]:
                 layout = [
-                    sg.Text(
-                        f"- {sorv['quantidade']} {sorv['produtos']['_Sorvete__sabor']}"
-                    ),
+                    sg.Text(f"- {sorv['quantidade']} {sorv['sorvete']}"),
                 ]
 
                 sorvs.append(layout)
 
             transfs.append([sg.Column(sorvs)])
 
-        if len(transferencias_produtos) == 0:
+        if len(transferencias) == 0:
             transfs.append([sg.Text("Não há transferências realizadas")])
 
         transfs.append([sg.Button("Ok")])
@@ -281,101 +253,84 @@ class TelaTransferencia(Tela):
         info_w.close()
         return
 
-    """
-        print("---------- Transferência ----------")
-        print("Codigo: ", transferencia.codigo)
-        print("Código depósito: ", transferencia.deposito_dest.codigo)
-        print("Data: ", transferencia.data)
-        for cod, qtd in transferencia.produtos.items():
-            print("--- Produto ---")
-            print("Código: ", cod)
-            print("Quantidade: ", qtd)
-"""
-
     def buscar(self):
         sg.ChangeLookAndFeel("DarkTeal")
+
         layout = [
             [sg.Text("Buscar Transferência(s)", font=("Bahnschrift", 21))],
             [
                 sg.Text("Buscar por: "),
-                sg.Combo(["Produto", "Data"], key="opcao"),
+                sg.Combo(
+                    ["Produto", "Depósito"],
+                    key="opcao",
+                    enable_events=True,
+                ),
                 sg.InputText("", key="info"),
+            ],
+            [
+                sg.Button("De", key="data_inicio_button"),
+                sg.InputText(
+                    "",
+                    use_readonly_for_disable=True,
+                    disabled=True,
+                    key="data_inicio",
+                ),
+            ],
+            [
+                sg.Button("Até", key="data_fim_button"),
+                sg.InputText(
+                    "",
+                    use_readonly_for_disable=True,
+                    disabled=True,
+                    key="data_fim",
+                ),
             ],
             [sg.Button("Buscar"), sg.Button("Retornar")],
         ]
 
-        self.__window = sg.Window("IceFac").Layout(layout)
+        self.__window = sg.Window("IceFac", layout, finalize=True)
+        for el in self.__window.element_list():
+            if el is not None and el.key is not None:
+                if "display" in el.key:
+                    el.Widget.config(readonlybackground=sg.theme_background_color())
+                    el.Widget.config(borderwidth=0)
 
-        button, values = self.open()
+        while True:
+            button, values = self.open()
 
-        if button == "Buscar" and (
+            if button == "Buscar" and (
                 (values["info"] is None or values["info"].strip() == "")
                 or (values["opcao"] is None or values["opcao"].strip() == "")
-        ):
-            res = self.erro_tentar_novamente("Pesquisa inválida.")
-            if res == "No":
+            ):
+                res = self.erro_tentar_novamente("Pesquisa inválida.")
+                if res == "No":
+                    self.close()
+                    return
+                else:
+                    self.close()
+                    return self.buscar()
+
+            elif button == "data_inicio_button":
+                data_inicio = sg.popup_get_date(close_when_chosen=True)
+                if data_inicio:
+                    m, d, y = data_inicio
+                    self.__window["data_inicio"].update(f"{d}/{m}/{y}")
+
+            elif button == "data_fim_button":
+                data_fim = sg.popup_get_date(close_when_chosen=True)
+                if data_fim:
+                    m, d, y = data_fim
+                    self.__window["data_fim"].update(f"{d}/{m}/{y}")
+
+            elif button == "Buscar":
+                self.close()
+                return values
+            elif button in ("Retornar", None):
                 self.close()
                 return
-            else:
-                self.close()
-                return self.buscar()
 
-        self.close()
+    def alterar(self):
+        pass
 
-        if button in ("Retornar", None):
-            return
-
-        return values
-
-    """
-        print("---------- Buscar Transferência ----------")
-        codigo = self.input_int("Código da Transferência a ser encontrada: ")
-        return codigo
-    """
-
-    def remover(self, transferencias):
-        sg.ChangeLookAndFeel("DarkTeal")
-        layout = [
-            [sg.Text("Excluir Transferência", font=("Bahnschrift", 21))],
-            [
-                sg.Text(
-                    "Selecione a Transferência:",
-                    font=("Bahnschrift", 12),
-                ),
-            ],
-            [
-                sg.Combo(
-                    transferencias,
-                    font=("Bahnschrift", 12),
-                    key="transferencia",
-                )
-            ],
-            [sg.Button("Confirmar"), sg.Button("Cancelar")],
-        ]
-        self.__window = sg.Window("IceFac").Layout(layout)
-        button, values = self.open()
-        self.close()
-
-        if button in ("Cancelar", None):
-            return
-
-        transferencia = values["transferencia"]
-        if transferencia is None or transferencia.strip() == "":
-            tentar_novamente = self.erro_tentar_novamente("Nenhuma transferência selecionada")
-            if tentar_novamente.lower() == "no":
-                self.close()
-                return
-            else:
-                self.close()
-                return self.remover(transferencias)
-
-        return transferencia
-
-    """
-        print("---------- Remover Transferência ----------")
-        codigo = self.input_int("Código da Transferência a ser removida: ")
-        return codigo
-    """
-
-    def alterar(self, value):
-        return
+    def remover(self):
+        pass

@@ -12,8 +12,11 @@ class ControladorSorvetes:
         self.__controlador_sistema = controlador_sistema
         self.__controlador_sistema = controlador_sistema
         self.__tela_sorvetes = TelaSorvete()
-        self.__sorvetes = []
         self.__sorvetes_dao = SorveteDAO()
+
+    @property
+    def sorvetes_dao(self):
+        return self.__sorvetes_dao
 
     def buscar_sorvete(self):
         val = self.__tela_sorvetes.buscar()
@@ -124,26 +127,22 @@ class ControladorSorvetes:
             for sorv in sorvetes:
                 if sorv.sabor == sabor:
                     for ing in sorv.receita:
-                        print(ing)
                         ingrediente = self.__controlador_sistema.controlador_ingredientes.ingredientes_dao.get(
                             ing["ingrediente"].codigo
                         )
 
                         ings_to_update.append(ingrediente)
                         ings_bkp.append(copy.copy(ingrediente))
-                        print(ingrediente)
 
                         self.__controlador_sistema.controlador_ingredientes.diminuir_quantidade(
                             ingrediente, ing["quantidade"] * quantidade
                         )
 
-                    sorv.quantidade = sorv.quantidade + 1
-                    print(sorv.__dict__)
+                    sorv.quantidade = sorv.quantidade + quantidade
 
                     self.__sorvetes_dao.update(sorv)
 
                     for ing in ings_to_update:
-                        print(ing.quantidade)
                         self.__controlador_sistema.controlador_ingredientes.ingredientes_dao.update(
                             ing
                         )
@@ -215,22 +214,22 @@ class ControladorSorvetes:
         except Exception as e:
             self.__tela_sorvetes.mensagem_erro(e)
 
-    def buscar_por_codigo(self, codigo):
-        for ing in self.__sorvetes:
-            if ing.codigo == codigo:
-                return ing
-        return None
+    def diminuir_quantidade(self, sabor, quantidade):
+        sorvetes = self.__sorvetes_dao.get_all()
 
-    def diminuir_quantidade(self, codigo, quantidade):
-        sorvete = self.buscar_por_codigo(codigo)
-        if sorvete == None:
-            raise SorveteNaoEncontrado(codigo)
+        try:
+            for sorv in sorvetes:
+                if sorv.sabor == sabor:
+                    nova_quantidade = sorv.quantidade - quantidade
+                    if nova_quantidade < 0:
+                        raise SorveteInsuficiente(
+                            sorv.sabor, quantidade, sorv.quantidade
+                        )
 
-        nova_quantidade = sorvete.quantidade - quantidade
-        if nova_quantidade < 0:
-            raise SorveteInsuficiente(sorvete.sabor, quantidade, sorvete.quantidade)
-
-        sorvete.quantidade = nova_quantidade
+                    sorv.quantidade = nova_quantidade
+            raise SorveteNaoEncontrado(sabor)
+        except Exception as e:
+            return e
 
     def preparar_para_tela(self, sorvetes):
         sorvetes_receitas = []

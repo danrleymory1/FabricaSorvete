@@ -1,12 +1,21 @@
 import datetime
+import uuid
 
 
 class Transferencia:
     def __init__(self, deposito_dest, produtos):
-        super().__init__()
+        self.__codigo = str(uuid.uuid4())
         self.__deposito_dest = deposito_dest
         self.__produtos = produtos
         self.__data = datetime.datetime.now()
+
+    @property
+    def codigo(self):
+        return self.__codigo
+
+    @codigo.setter
+    def codigo(self, codigo):
+        self.__codigo = codigo
 
     @property
     def deposito_dest(self):

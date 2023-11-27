@@ -9,6 +9,10 @@ class ControladorDepositos:
         self.__controlador_sistema = controlador_sistema
         self.__depositos_dao = DepositoDAO()
 
+    @property
+    def depositos_dao(self):
+        return self.__depositos_dao
+
     def buscar_deposito(self):
         descricao = self.__tela_deposito.buscar()
 

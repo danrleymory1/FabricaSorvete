@@ -86,11 +86,6 @@ class TelaDeposito(Tela):
             layout
         )
 
-    # def adicionar(self):
-    #     print("---------- Novo Depósito ----------")
-    #     descricao = input("Descricao = ")
-    #     return descricao
-    #
     def adicionar(self, depositos):
         sg.ChangeLookAndFeel("DarkTeal")
         layout = [
